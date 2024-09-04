@@ -37,6 +37,14 @@ class MyUserManager(BaseUserManager):
         extra_fields.setdefault('is_superuser', True)
 
         return self.create_user(email, phone, user_type, date_of_birth, register_number, password, **extra_fields)
+    
+    # def create_superuser(self, email, phone, user_type, date_of_birth, register_number, password=None):
+        # user = self.create_user(email, phone, user_type, date_of_birth, register_number, password)
+        # user.is_staff = True
+        # user.is_superuser = True
+        # user.is_active = True  # Usually, superusers should be active
+        # user.save(using=self._db)
+        # return user
 
 
 usertype_choice = (
@@ -80,4 +88,22 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         ordering = ('created_at',)
 
+
+class Profile(models.Model):
+    def upload_design_to(self, filename):
+        return f'user_profile/{self.user.id}/{filename}'
+    # null=True: Profile can exist without being associated with a User, this is generally not recommended unless there's a specific use case for it.
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    first_name = models.CharField(max_length=15)
+    last_name = models.CharField(max_length=15)
+    full_name = models.CharField(max_length=30, blank=True, null=True)
+    address = models.CharField(max_length=45, blank=True, null=True)
+    standard = ArrayField(
+        models.CharField(max_length=10, blank=True),
+        blank=True, default=list)
+    profile_picture = models.ImageField(
+        upload_to=upload_design_to, blank=True, null=True, default='user_profile/profile.png')
+    
+    def __str__(self):
+        return str(self.user)
 

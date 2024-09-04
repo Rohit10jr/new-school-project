@@ -3,16 +3,26 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from utils.response import ResponseChoices
 from django.contrib.auth import login, logout, authenticate
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.status import (
     HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_401_UNAUTHORIZED, HTTP_204_NO_CONTENT,
     HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_203_NON_AUTHORITATIVE_INFORMATION, HTTP_206_PARTIAL_CONTENT
 )
 from django.contrib.auth import get_user_model
 User = get_user_model()
-from .serializers import SigninSerializer,SignupSerializer
+from .serializers import SigninSerializer,SignupSerializer, ProfileSerializer, UserCheckSerializer, UserDetailsSerializer
 from rest_framework.authtoken.models import Token
 from .auth_backend import PasswordlessAuthBackend
+
+from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView, ListAPIView
+from django.shortcuts import get_object_or_404
+from .models import Profile
+from django.db.models import Q
+from utils.pagination import Pagination
+from rest_framework.exceptions import PermissionDenied
+from django.http import Http404
+from rest_framework.pagination import PageNumberPagination
+
 # Create your views here.
 
 # rohit@mail.com 6374851119
@@ -70,3 +80,276 @@ class LogoutView(APIView):
             return Response({'status': ResponseChoices.LOGOUT}, status=HTTP_200_OK)
         return Response({'status': 'user doesn\'t logged in'}, status=HTTP_204_NO_CONTENT)
 
+
+
+class StudentProfileView(RetrieveUpdateAPIView):
+    serializer_class = ProfileSerializer
+    permission_classes = [AllowAny]
+
+    # def retrieve(self, request, *args, **kwargs):
+    #     return super().retrieve(request, *args, **kwargs)
+
+    def retrieve(self, request, pk):
+        if self.request.user.user_type == 'is_student' and self.request.user.id == pk:
+            queryset = get_object_or_404(Profile, user=pk)
+        else:
+            return Response({"status": 'failure', "message": "you don't have a permissions"}, status=HTTP_203_NON_AUTHORITATIVE_INFORMATION)
+        serializer = ProfileSerializer(queryset)
+        return Response(serializer.data, status=HTTP_200_OK)
+
+    def update(self, request, pk):
+        try:
+            profile = Profile.objects.get(user=pk)
+            serializer = ProfileSerializer(profile, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+            return Response(serializer.data, status=HTTP_200_OK)
+        except Exception as e:
+            return Response({'status': 'failure', 'data': str(e)}, status=HTTP_204_NO_CONTENT)
+
+
+class UserDetailsView(ListAPIView, Pagination):
+    serializer_class = UserDetailsSerializer
+    permission_classes = [AllowAny]
+
+    def get_queryset(self):
+        standard = self.request.query_params.get('standard')
+        user_type = (self.request.query_params.get('user_type'))
+        user = self.request.user
+        queryset = []
+        if user.user_type != '':
+            if user.user_type == 'is_student':
+                queryset = User.objects.get(id=user.id)
+            elif user.user_type == 'is_staff':
+                staff_standard = user.profile.standard
+                print(staff_standard)
+                queryset = User.objects.all()
+                queryset = User.objects.filter(
+                    user_type='is_student', profile__standard__overlap=staff_standard)
+                print(queryset)
+            elif user.user_type == 'is_admin':
+                queryset = User.objects.all()
+
+            # for none student and without user type  
+            if standard and user.user_type != 'is_student':
+                queryset = queryset.filter(
+                    profile__standard__overlap=[standard])
+                if user_type:
+                    queryset = queryset.filter(user_type=user_type)
+                print(queryset)
+        else:
+            # for data_entry true
+            if user.is_data_entry:
+                queryset = User.objects.all()
+                print(len(queryset))
+        return queryset
+
+    def list(self, request):
+        try:
+            user = request.user
+            queryset = self.get_queryset()
+            results = self.paginate_queryset(queryset)
+            if user.user_type == 'is_student':
+                serializer = UserDetailsSerializer(results)
+            else:
+                serializer = UserDetailsSerializer(queryset, many=True)
+            return self.get_paginated_response(serializer.data)
+        except Exception as e:
+            return Response({'status': 'failure', 'data': str(e)}, status=HTTP_204_NO_CONTENT)
+        
+
+class UserDetailsEditView(RetrieveUpdateDestroyAPIView):
+    serializer_class = UserDetailsSerializer
+    permission_classes = [AllowAny]
+    queryset = User.objects.all()
+
+    def retrieve(self, request, pk):
+        try:
+            requestuser = self.request.user
+            if requestuser.id == pk:
+                user = User.objects.get(pk=pk)
+            else:
+                if requestuser.user_type == 'is_admin':
+                    user = User.objects.get(Q(user_type='is_staff', pk=pk) | Q(
+                        user_type='is_student', pk=pk) | Q(is_data_entry=True, pk=pk))
+                elif requestuser.user_type == 'is_staff':
+                    user = User.objects.get(user_type='is_student', pk=pk)
+            serializer = UserDetailsSerializer(user)
+            return Response(serializer.data, status=HTTP_200_OK)
+        except:
+            return Response({"status": "User doesn't exits or you don't have a permissions"}, status=HTTP_204_NO_CONTENT)
+    
+
+class ProfileView(APIView):
+    # this are typically used in generic or viewset not in apiview
+    # serializer_class = UserDetailsSerializer
+    # queryset = User.objects.all()
+    # permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        user = self.request.user
+        serializer = UserDetailsSerializer(user)
+        return Response({"status": ResponseChoices.SUCCESS, "data": serializer.data}, status=HTTP_200_OK)
+
+#AB
+# class check_for_user(APIView):
+#     serializer_class = UserDetailsSerializer
+#     permission_classes = [AllowAny]
+
+#     def get(self, request):
+#         email = (self.request.query_params.get('email'))
+#         phone = self.request.query_params.get('phone')
+#         users = User.objects.all()
+#         for i in users:
+#             if phone and i.phone == phone:
+#                 return Response(status=HTTP_200_OK)
+#             if email and i.email == email.lower():
+#                 return Response(status=HTTP_200_OK)
+#         return Response(status=HTTP_404_NOT_FOUND)
+
+
+
+#  Alternate serializers with better logic and practices
+'''
+class StudentProfileView(RetrieveUpdateAPIView):
+    serializer_class = ProfileSerializer
+    permission_classes = [IsAuthenticated]
+
+    def retrieve(self, request, *args, **kwargs):
+        user = request.user
+        profile_user_id = kwargs.get('pk')
+        
+        if user.user_type == 'is_student' and user.id == int(profile_user_id):
+            profile = get_object_or_404(Profile, user=profile_user_id)
+            serializer = self.get_serializer(profile)
+            return Response(serializer.data, status=HTTP_200_OK)
+        else:
+            raise PermissionDenied("You don't have permission to access this profile.")
+
+    def update(self, request, *args, **kwargs):
+        profile_user_id = kwargs.get('pk')
+        user = request.user
+
+        if user.user_type == 'is_student' and user.id == int(profile_user_id):
+            profile = get_object_or_404(Profile, user=profile_user_id)
+            serializer = self.get_serializer(profile, data=request.data)
+            
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=HTTP_200_OK)
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+        else:
+            raise PermissionDenied("You don't have permission to update this profile.")
+
+class UserDetailsView(ListAPIView, PageNumberPagination):
+    serializer_class = UserDetailsSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        standard = self.request.query_params.get('standard')
+        user_type = self.request.query_params.get('user_type')
+        user = self.request.user
+
+        # Default queryset
+        queryset = User.objects.all()
+
+        # Filter based on user type
+        if user.user_type == 'is_student':
+            queryset = queryset.filter(id=user.id)
+        elif user.user_type == 'is_staff':
+            staff_standard = user.profile.standard
+            queryset = queryset.filter(user_type='is_student', profile__standard__overlap=staff_standard)
+        elif user.user_type == 'is_admin':
+            pass  # No additional filtering for admins
+
+        # Additional filtering
+        if standard and user.user_type != 'is_student':
+            queryset = queryset.filter(profile__standard__overlap=[standard])
+        if user_type:
+            queryset = queryset.filter(user_type=user_type)
+
+        return queryset
+
+    def list(self, request, *args, **kwargs):
+        try:
+            queryset = self.get_queryset()
+            page = self.paginate_queryset(queryset)
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        except Exception as e:
+            return Response({'status': 'failure', 'data': str(e)}, status=HTTP_400_BAD_REQUEST)
+
+
+class UserDetailsEditView(RetrieveUpdateDestroyAPIView):
+    serializer_class = UserDetailsSerializer
+    permission_classes = [IsAuthenticated]
+    queryset = User.objects.all()
+
+    def get_object(self):
+        try:
+            requestuser = self.request.user
+            user_id = self.kwargs.get('pk')
+            user = User.objects.get(pk=user_id)
+
+            # Permission checks
+            if requestuser.id != user_id:
+                if requestuser.user_type == 'is_admin':
+                    if not (user.user_type in ['is_staff', 'is_student'] or user.is_data_entry):
+                        raise PermissionDenied("You do not have permission to access this user.")
+                elif requestuser.user_type == 'is_staff' and user.user_type != 'is_student':
+                    raise PermissionDenied("You do not have permission to access this user.")
+
+            return user
+        except User.DoesNotExist:
+            raise Http404("User does not exist.")
+
+    def retrieve(self, request, *args, **kwargs):
+        user = self.get_object()
+        serializer = self.get_serializer(user)
+        return Response(serializer.data, status=HTTP_200_OK)
+
+
+class ProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        serializer = UserDetailsSerializer(user)
+        return Response({"status": ResponseChoices.SUCCESS, "data": serializer.data}, status=HTTP_200_OK)
+
+'''
+# class check_for_user(APIView):
+#     permission_classes = [AllowAny]
+
+#     def get(self, request):
+#         email = self.request.query_params.get('email')
+#         phone = self.request.query_params.get('phone')
+
+#         if phone:
+#             if User.objects.filter(phone=phone).exists():
+#                 return Response({"status": "User with this phone number exists."}, status=HTTP_200_OK)
+        
+#         if email:
+#             if User.objects.filter(email=email.lower()).exists():
+#                 return Response({"status": "User with this email exists."}, status=HTTP_200_OK)
+
+#         return Response({"status": "No user found with the given email or phone number."}, status=HTTP_404_NOT_FOUND)
+
+
+class check_for_user(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        serializer = UserCheckSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        email = serializer.validated_data.get('email')
+        phone = serializer.validated_data.get('phone')
+
+        if phone and User.objects.filter(phone=phone).exists():
+            return Response({"status": "User with this phone number exists."}, status=HTTP_200_OK)
+        
+        if email and User.objects.filter(email=email.lower()).exists():
+            return Response({"status": "User with this email exists."}, status=HTTP_200_OK)
+
+        return Response({"status": "No user found with the given email or phone number."}, status=HTTP_404_NOT_FOUND)

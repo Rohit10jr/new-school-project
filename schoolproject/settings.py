@@ -154,9 +154,17 @@ AUTH_USER_MODEL = 'accounts.User'
 # when to use it
 ################
 
+# real backend
 # AUTHENTICATION_BACKENDS = (
 #     'accounts.auth_backend.PasswordlessAuthBackend',
 # )
+
+# for emial or phone as user id
+# AUTHENTICATION_BACKENDS = [
+#     'path.to.EmailOrPhoneBackend',  # Replace 'path.to' with the actual path to the backend
+#     'django.contrib.auth.backends.ModelBackend',  # Keep the default backend for admin and other purposes
+# ]
+
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
