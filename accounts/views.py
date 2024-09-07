@@ -58,6 +58,7 @@ class SimpleLoginView(APIView):
                 return Response({"status": str(e)}, status=HTTP_204_NO_CONTENT)
             if user:
                 token, created = Token.objects.get_or_create(user=user)
+                print(token)
                 data = {
                     "id": user.id,
                     "token": token.key,
@@ -67,7 +68,7 @@ class SimpleLoginView(APIView):
                     "data_entry": user.is_data_entry,
                     "register_number": user.register_number
                 }
-                return Response({"status": ResponseChoices.SUCCESS, "data": data}, status=HTTP_200_OK)
+                return Response({"status": ResponseChoices.SUCCESS, "data": data, "token":token.key}, status=HTTP_200_OK)
         return Response({"status": "failed"}, status=HTTP_203_NON_AUTHORITATIVE_INFORMATION)
         
 
