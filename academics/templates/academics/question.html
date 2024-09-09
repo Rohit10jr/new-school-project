@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    h1,h3,h4{
+        text-align: center;
+    }
+    
+</style>
+<body>
+
+<h1> SCHOOLS </h1>
+<h1>EXAMINATION 2022 </h1>
+<h3>CLASS -{{grade}} </h3>
+<h3>Subject: {{subject}} </h3>
+
+<h4>Time : 120 minutes </h4>
+
+<div class="notes">
+
+    <p> <strong>Note: </strong> <br>
+        1. All questions are compulsory. <br>
+        2. Each question carries 2 marks. <br>
+        3. Teacher will speak the question and its options loudly and slowly <br>
+        but no hint or clue will be given in any manner. </p>
+
+</div>
+
+<div class="questions">
+    {% for d in data %}
+
+    <p> {{ forloop.counter }}. &nbsp; {{d.question}}</p>
+
+    {% endfor %}
+</div>
+
+</body>
+</html>

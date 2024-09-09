@@ -1,0 +1,253 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<div id="message">
+
+</div>
+<div class="error-messages container-fluid">
+
+</div>
+<div class="question-paper-list">
+</div>
+
+
+<!-- <div class="question-paper-subject" >
+  <div class="question-paper">
+      <p> here get your question-paper pdf link </p>
+  </div> -->
+
+
+<div class="question-paper-form col-md-9 col-10" id="q-form">
+
+  <div class="q-form">
+    {% csrf_token %}
+
+    <p><label for="id_subject">Grade:</label>{{form.grade}} </p>
+    <p><label for="id_subject">Subject:</label> <select name="subject" required="" id="id_subject">
+        <option value="" selected="">---------</option>
+      </select></p>
+    <p><label for="id_no_of_questions">No of questions:</label> <input type="text" name="no_of_questions" maxlength="20"
+        required="" id="id_no_of_questions"></p>
+    <p class="text-center">
+      <!-- <button  id="chapter-btn" class="submit-btn btn btn-primary" onclick=getquestion()>Get</button> -->
+      <button id="next-btn" class="submit-btn btn btn-warning" onclick=getnext()>Next</button>
+    </p>
+    <!-- <button id="save-button" class="submit-btn btn btn-primary" onclick=savequestion()>Save</button></p> -->
+  </div>
+</div>
+</div>
+
+
+<div id="customize">
+  <p><label for="from_chapter">From Chapter:</label> <select name="chapter" required="" id="from_chapter"
+      class="form-control">
+      <option value="" selected="">---------</option>
+    </select></p>
+  <p><label for="to_chapter">To Chapter:</label> <select name="chapter" required="" id="to_chapter">
+      <option value="" selected="" class="form-control">---------</option>
+    </select></p>
+  {{custom_form.as_p}}
+  <button id="customize-btn" class="submit-btn btn btn-warning" onclick=customize()>Customize</button></p>
+  <button id="next-btn" class="submit-btn btn btn-warning" onclick=>Next</button></p>
+</div>
+
+<div id="customize-form">
+  {{form1.as_p}}
+  <button id="next-btn" class="submit-btn btn btn-warning" onclick=getpreview()>Next</button></p>
+</div>
+
+
+<div id="preview-form">
+  <p>Grade:</p>
+  <p>Subject:</p>
+  <p>Chapters:</p>
+  <p>No of questions:</p>
+  <p>Remarks/Descrption:</p>
+  <button id="back-btn" class="submit-btn btn btn-warning" onclick=customize()>Back</button></p>
+  <button id="createtest-btn" class="submit-btn btn btn-warning" onclick=savequestion()>Creat Test</button></p>
+</div>
+
+
+
+
+
+
+<script>
+
+  var messages = document.getElementById('message')
+  var token = localStorage.getItem('token')
+  let error_messages = document.querySelector('.error-messages')
+
+
+  if (token) {
+    blank_url = 'https://schooltestproject.herokuapp.com'
+    for_answer = '/api/question-paper/'
+    url = 'http://127.0.0.1:8000/api/question-paper-list/'
+
+
+    $("#id_grade").change(function () {
+      var url_for_change = 'http://127.0.0.1:8000/api/ajax/load-subject/';
+      var gradeId = $(this).val();
+
+      $.ajax({
+        url: url_for_change,
+        data: {
+          'grade': gradeId
+        },
+        success: function (data) {
+          $("#id_subject").html(data);
+        }
+      });
+
+    });
+
+    $('#id_subject').change(function () {
+      var url_for_change = 'http://127.0.0.1:8000/api/ajax/load-subject/';
+      var subjectId = $(this).val();
+
+      $.ajax({
+        url: url_for_change,
+        data: {
+          'subject': subjectId
+        },
+        success: function (data) {
+          $("#id_chapter").html(data),
+            $("#to_chapter").html(data),
+            $("#from_chapter").html(data)
+        }
+      });
+    });
+    function getnext() {
+
+      document.getElementById("q-form").style.display = "none";
+      document.getElementById("customize").style.display = "block";
+    }
+
+    function customize() {
+      document.getElementById("customize").style.display = "none";
+      document.getElementById("customize-form").style.display = "block";
+      document.getElementById("preview-form").style.display = "none";
+    }
+
+    function getpreview() {
+      document.getElementById("customize-form").style.display = "none";
+      document.getElementById("preview-form").style.display = "block";
+    }
+
+
+
+
+
+    function savequestion() {
+
+      grade = document.getElementById('id_grade').value
+      subject = document.getElementById('id_subject').value
+      no_of_question = document.getElementById('id_no_of_questions').value
+      chapter = document.getElementById('id_chapter').value
+      console.log(grade + subject)
+      let url1 = new URL('http://127.0.0.1:8000/api/question-paper/')
+      url1.searchParams.append('type', 'save');
+      let csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+      console.log(url1)
+      fetch(url1, {
+        method: 'POST',
+        body: JSON.stringify({ 'grade_name': grade, 'subject': subject, 'chapter': chapter, 'number_of_questions': no_of_question }
+        ),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'token' + ' ' + token,
+          'X-CSRFToken': csrftoken
+        },
+      }).then(response => response.json()).then(data => {
+        console.log(data)
+        if (data.status == 'success') {
+          grade_id = data.grade_id
+          subject_id = data.subject_id
+          let path = `
+       <p> Grade : ${data.data.grade_name} </p>
+       <p> Subject : ${data.data.subject_name} </p>
+       <p> Created_by : ${data.data.created_by} </p>
+       <p> Question_numbers : ${data.data.no_of_questions} </p>
+       <p> Number of questions : ${(data.data.no_of_questions).length}
+       <p> Created Time : ${(data.data.created_at.slice(0, 10))} ${(data.data.created_at.slice(11, 19))} </p>
+ <p> Question-paper pdf file  <a onclick=downloadfile('https://schooltestproject.herokuapp.com${data.data.file}')> -  download </a> </p>`
+
+          let questionPath = document.querySelector('.question-paper')
+          questionPath.innerHTML = path;
+          // getquestionanswerpaper(data.data.id);
+        } else {
+          console.log(data.data)
+          let questionPath = document.querySelector('.question-paper')
+          if (data.data) {
+            questionPath.innerHTML = data.data
+          } else {
+            questionPath.innerHTML = data.detail
+          }
+
+        }
+      })
+    }
+
+    function getquestion() {
+      grade = document.getElementById('id_grade').value
+      subject = document.getElementById('id_subject').value
+      no_of_question = document.getElementById('id_no_of_questions').value
+      chapter = document.getElementById('id_chapter').value
+      console.log(subject)
+      let csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+      fetch('http://127.0.0.1:8000/api/question-paper/', {
+        method: 'POST',
+        body: JSON.stringify({ 'grade_name': grade, 'subject': subject, 'chapter': chapter, 'number_of_questions': no_of_question }
+        ),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'token' + ' ' + token,
+          'X-CSRFToken': csrftoken
+        },
+      }).then(response => response.json()).then(data => {
+        console.log(data)
+        if (data.status == 'success') {
+
+          grade_id = data.grade_id
+          subject_id = data.subject_id
+          console.log(data.question_path)
+          let uri = `https://schooltestproject.herokuapp.com`
+          let path = `
+<p> Question-paper pdf file  <a onclick=downloadfile('${uri}${data.question_path}')> -  download </a> </p>
+          `;
+          let questionPath = document.querySelector('.question-paper')
+          questionPath.innerHTML = path;
+
+
+        } else {
+          let questionPath = document.querySelector('.question-paper')
+          if (data.data) {
+            questionPath.innerHTML = data.data
+          } else {
+            questionPath.innerHTML = data.detail
+          }
+        }
+
+
+      })
+    }
+
+    function downloadfile(uri) {
+      var link = document.createElement("a");
+      link.download = 'answer';
+      link.href = uri;
+      console.log(link)
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      delete link;
+    }
+  } else {
+    window.location.href = `${host}/404`
+  }
+
+</script>
+{% endblock %}

@@ -1,0 +1,179 @@
+
+        .question-paper-form {
+            background-color: #8388a72b;
+            padding: 30px 50px;
+            border-radius: 5px;
+            flex-basis: 23%;
+             margin: 7% 34%;
+             box-shadow: #39438091 0px 5px 15px;
+        }
+        .q-form-5 p {
+            color: white;
+        } 
+        .question-container-table  input[type=checkbox] {
+            accent-color: #E0144C
+          }
+         .q-form-5 p.heading {
+            font-size: 27px;
+            text-transform: capitalize;
+            text-align: center;
+        }
+
+        #q-form-2 input[type=checkbox]{
+         
+            width: 25%;
+    
+        }
+        #q-form-6 input {
+            width: auto;
+        }
+
+        #q-form-6 th {
+            text-transform: capitalize;
+        }
+        div#q-form-4 {
+            width: 15%;
+            padding: 1% 3%;
+            position: absolute;
+            top: 40vh;
+            right: 7%;
+            background-color: beige;
+        }
+        button#get-question-papers {
+            margin-top: 8%;
+            margin-left: -15%;
+        }
+        .quespaper-btns button {
+            margin-left: 2%;
+        }
+
+        input#id_AllChapter {
+            height: 2.2vh;
+            position: absolute;
+            margin: 0.1% -6%;
+        }
+    #test-create-details .modal-content{
+        width: auto;
+        margin: auto;
+    }
+    .question-container-table {
+        height: 70vh;
+        overflow: auto;
+        margin-bottom: 1%;
+    }
+    div#q-form-3 span {
+        color: white;
+    }
+    .question-container-table tr {
+        color: white;
+    }
+    .question-container-table .table-heading{
+        position: sticky;
+        top: 0%;
+        background-color: aliceblue;
+        color:rgba(22,34,57,0.95);
+    }
+    .question-paper-form label{
+    margin: 3%;
+    }
+    .question-list-container select {
+        width: auto;
+        display: inline;
+    }
+    .question-list-container-customize {
+        margin: 5%;
+    }
+    div#q-form-4 select {
+        width: auto;
+        display: inline;
+        margin: 0% 0% 0% 3%;
+        background-color: aliceblue;
+    }
+
+    @media screen and (min-width: 800px) and (max-width: 1200px){
+    .question-paper-form {
+        background-color: #8388a72b;
+        width: 34vw;
+        padding: 30px 50px;
+        margin: 10% 32%;
+    }
+    input#id_AllChapter {
+        height: 2.2vh;
+        position: absolute;
+        margin: 0.5% -11%;
+    }
+}
+@media screen and (min-width:1200px) and (max-width:1450px) {
+    .question-paper-form {
+        background-color: #8388a72b;
+        width: 24vw;
+        padding: 30px 3%;
+        margin: 7% 38%;
+    }
+
+    .question-paper-form label {
+        width: 9vw;
+    }
+    input#id_AllChapter {
+        height: 3vh;
+        position: absolute;
+        margin: 0.4% -8.2%;
+    }
+    div#q-form-4 {
+        width: 17%;
+    }
+    div#q-form-4 .back-btn{
+        margin: 0;
+    }
+}
+@media screen and (min-width:430px) and (max-width:800px) {
+
+    .question-paper-form {
+        width: 52vw;
+        padding: 30px 50px;
+        margin: 14% 28%;
+    }
+    div#q-form-4 .back-btn{
+        margin: 0;
+    }
+    input#id_AllChapter {
+        height: 2.2vh;
+        position: absolute;
+        margin: 0.5% -14%;
+    }
+    div#q-form-4 {
+        width: 35%;
+        position: static;
+        margin: 1% 33%;
+    }
+    div#q-form-4 .back-btn{
+        margin: 0;
+        position: static;
+    }
+}
+@media screen and (max-width:500px) {
+    .question-paper-form {
+        background-color: #6264705e;
+        width: 100%;
+        padding: 30px 50px;
+        margin-bottom: 15%;
+        border-radius: 5px;
+        margin-left: 0%;
+    }
+    .question-paper-form input {
+        width: 90%;
+    }
+            input#id_AllChapter {
+                height: 2.2vh;
+                position: absolute;
+                margin: 0.8% -27%;
+            }
+            div#q-form-4 {
+                width: 56%;
+                background-color: beige;
+                margin: 1% 26%;
+            }
+            .question-papers-card {
+                margin-left: 2rem !important;
+            }
+}

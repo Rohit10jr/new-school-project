@@ -1,0 +1,109 @@
+/* .chapter-cards {
+    display: grid;
+    width: 80%;
+    padding-left: 0%;
+    margin: 0% 1% 15%;
+    height: auto;
+    padding-top: 5%;
+    grid-template-columns: auto auto auto;
+    gap: 8%;
+} */
+/* .chapter-card {
+   ;
+} */
+#back-btn-chapter {
+    display: inline;
+}
+
+/* .ch-btn {
+    margin-left: 0%;
+    background-color: #0062cc;
+    border-color: #005cbf;
+    color: white;
+    border-radius: 5px;
+} */
+
+.chapter-cards .chapter-card {
+    background-color: #dcddff66;
+    margin: 3%;
+    padding: 2%;
+    width: 17rem;
+}
+    
+.chapter-list label {
+    width: 10%;
+}
+.chapter-card #delete {
+    padding: 5px 15px;
+    margin-left: 0%;
+    border-radius: 5px;
+    font-size: 150%;
+}
+
+.chapter-card #edit {
+    padding: 5px 15px;
+    margin-left: 7%;
+    border-radius: 5px;
+}
+@media screen and (min-width:1024px) and (max-width:1200px) {
+
+    .chapter-cards {
+        width: 100%;
+    }
+    .chapter-cards .chapter-card {
+        min-height: auto;
+    }
+    
+}
+@media screen and (min-width:1359px) and (max-width:1450px) {
+    .chapter-cards .chapter-card {
+        min-height: 99%;
+    }
+
+}
+@media screen and (min-width:430px) and (max-width:800px) {
+    #chapterlist hr {
+        margin-left: 35%;
+    }
+}
+@media screen and (max-width:420px) {
+    .chapter-cards {
+        display: grid;
+        width: 100%;
+        padding-left: 0%;
+        margin: 0% 1% 15%;
+        height: auto;
+        padding-top: 5%;
+        grid-template-columns: auto auto auto;
+        gap: 8%;
+    }
+    .chapter-cards {
+        display: grid;
+        grid-template-columns: auto;
+        gap: 1%;
+    }
+
+    .chapter-cards .chapter-card {
+        min-height: 30vh;
+        height: auto;
+        width: 91%;
+        padding: 15% 10%;
+        cursor: pointer;
+        margin-left: 6%;
+        font-size: 16px;
+        box-shadow: rgb(100 100 111 / 20%) 0px 7px 29px 0px;
+    }
+
+    .chapter-card #edit {
+        margin-left: 10%;
+        font-size: 150%;
+    }
+
+    .chapter-card #delete {
+        font-size: 150%;
+        margin-top: 0;
+        margin-left: 0%;
+        color: #850b0b;
+    }
+
+}

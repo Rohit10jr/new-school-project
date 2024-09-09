@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+<head>
+<meta name="google-sigin-client-id " content="822684943304-6ireqjvfh24lv1c3a975sm0e3gsccro6.apps.googleusercontent.com">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- JavaScript Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+    crossorigin="anonymous"></script>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!-- font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- bootstrap -->
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  
+  <!-- style sheets -->
+  <link rel="stylesheet" href="{% static 'styles/main-tags1.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/login1.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/signup1.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/main1.css' %}">
+  <title>School</title>
+
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-sm navbar-light fixed-top">
+    <!-- Toggler/collapsibe Button -->
+    <div class="container-fluid">
+        <button class="navbar-toggler ms-auto ms-sm-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle Navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse justify-content-center" id="navbarCollapse">
+            <ul class="navbar-nav ms-2 align-items-end">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" id="nav-home">Home</a>
+                </li>
+                <li>
+                    <a class="nav-link" href="#">About us</a>
+                </li>
+                <li>
+                  <a class="nav-link" href="#">Contact</a>
+              </li>
+                <li>
+                    <a class="nav-link" href="#" id="nav-login">Login</a>
+                </li>
+                <li>
+                    <form action="#">
+                      <a class="btn btn-warning" id="signup" href="">Register </a>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+  {% block contents %}{% endblock %}
+  {% block login %}{% endblock %}
+  {% block signup %}{% endblock %}
+  <script>
+    var host = window.location.protocol + "//" + window.location.host;
+    document.getElementById('nav-login').href = `${host}/login`
+    document.getElementById('nav-home').href = `${host}/`
+    document.getElementById('signup').href = `${host}/signup`
+  </script>
+</body>
+</html>

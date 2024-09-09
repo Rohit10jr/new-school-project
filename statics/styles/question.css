@@ -1,0 +1,40 @@
+.questionbox {
+    background-color: #b2c8df;
+    color: white;
+    float: right;
+    margin-left: 1100px;
+    width: 20%;
+    margin-top: 200px;
+    padding: 30px 50px;
+    position: fixed;
+}
+.question-papers-card{
+    margin-left: 5rem !important;
+
+}
+.questionpath {
+    width: 20%;
+    height: 52px;
+    border-radius: 5px;
+    margin-top: 350px;
+    margin-left: 200px;
+    padding: 10px;
+    font-size: 20px;
+    color: white;
+    background-color: #5C7AEA;
+}
+
+#question {
+    color: black;
+    border: none;
+    border-radius: 3px;
+    margin-left: 90px;
+    padding: 5px 10px;
+}
+
+@media screen and (min-width:1024px) and (max-width:1200px) {
+
+}
+@media screen and (min-width:1359px) and (max-width:1450px) {}
+@media screen and (min-width:430px) and (max-width:800px) {}
+@media screen and (max-width:420px) {}

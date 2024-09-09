@@ -1,0 +1,58 @@
+.counts {
+    display: grid;
+    grid-template-columns: auto auto;
+    width: 33%;
+    margin-left: 31%;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 3%;
+}
+.list h1 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: bold;
+    text-align: left;
+    text-transform: capitalize;
+}
+
+.list {
+    border: none;
+    padding: 2%;
+    min-height: 60vh;
+    margin: 1%;
+}
+
+.list table {
+    margin: 1%;
+}
+
+.list table th,
+.list table td {
+    border: 1px solid;
+}
+
+.list div {
+    padding: 1%;
+    margin: 1% 0%;
+    width: 32%;
+    background: blanchedalmond;
+}
+
+.list div label {
+    width: 30%;
+}
+
+
+@media screen and (min-width:1024px) and (max-width:1200px) {
+
+}
+@media screen and (min-width:1359px) and (max-width:1450px) {}
+@media screen and (min-width:700px) and (max-width:800px) {}
+@media screen and (max-width:600px) {
+    .counts {
+        width: 85%;
+        margin-left: 11%;
+        font-size: 14px;
+        font-family: 'Poppins', sans-serif;
+    }
+}

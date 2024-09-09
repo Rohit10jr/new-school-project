@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block profile %}
+{% load static %}
+<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+<script src="https://kit.fontawesome.com/e732652cab.js" crossorigin="anonymous"></script>
+<div class="profile-container">
+  <!-- profile details -->
+  <div class="container ">
+  </div>
+  <!-- profile edit -->
+  <div id='profile-box'>
+
+    {%csrf_token%}
+    <i class="fa fa-light fa-xmark" onclick=back()></i>
+    <div class="standard-edit" id="standard-edit">
+
+    </div>
+    <div class="standard-details" id="standard-details">
+      <label>Standard:</label>
+      <select name="grade" class="std-in-form form-control" onchange=getsectionname(this) required="" id="std">
+      </select>
+      <label>Section:</label>
+      <select name="grade" class="sec-in-form form-control" required="" id="sec"></select>
+      <button onclick=add()>add</button>
+      <div class="profile-errors"></div>
+      <hr>
+    </div>
+
+    <p></p><label>Firstname:</label><br><input type="text" id="fname" placeholder="First Name"> </p>
+    <p></p><label>Lastname:</label><br><input type="text" id="lname" placeholder="Last Name"> </p>
+    <p></p><label>Fullname:</label><br><input type="text" id="ffname" placeholder="Full Name"> </p>
+    <p></p><label>Address:</label><br><input type="text" id="address" placeholder="Address"> </p>
+    <p></p><button data-toggle="modal" data-target="#messageModal-profile" id='profile-btn' class="btn btn-warning">update</button></p>
+
+  </div>
+</div>
+<!-- messages -->
+<div class="modal fade" id="messageModal-profile" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" id="close-btn" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="messages container-fluid">
+
+        </div>
+        <div class="error-messages container-fluid">
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+<script src="{% static 'script_files/profile.js' %}" type="text/javascript"></script>
+
+{% endblock %}

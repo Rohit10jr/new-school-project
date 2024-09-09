@@ -1,0 +1,40 @@
+.single-test-div {
+    padding: 8% 8% 2%;
+}
+
+.single-test {
+    /* width: 25%; */
+    margin: 2% 37%;
+    background-color: #fff8dcb0;
+}
+.test-list fieldset {
+    display: grid;
+    width: 80%;
+    margin: 2% 10%;
+    grid-template-columns: auto auto auto;
+    /* gap: 6%; */
+}
+@media screen and (min-width:1024px) and (max-width:1200px) {}
+@media screen and (min-width:1359px) and (max-width:1450px) {}
+@media screen and (min-width:430px) and (max-width:800px) {
+    .test-list {
+        width: 95%;
+        grid-template-columns: auto auto;
+        gap: 1%;
+    }
+
+    .test-list fieldset {
+        grid-template-columns: auto auto;
+    }
+}
+@media screen and (max-width:420px) {
+    .single-test {
+        margin: 2% 12%;
+    }
+    .test-list fieldset {
+        /* width: 59%; */
+        /* margin: 2% 20%; */
+        grid-template-columns: auto;
+        /* gap: 1%; */
+    }
+}

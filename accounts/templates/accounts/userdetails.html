@@ -1,0 +1,182 @@
+{% extends 'base.html'%}
+{% block userd %}
+<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+  <div id="userDetails">
+  {%csrf_token%}
+  <label for="email">Email:</label><br>
+  <input class='form-control' type="email" id='email' placeholder="Email"> 
+
+  <label for="phone">Phone:</label><br>
+   <input class='form-control' type="phone" id="phone"placeholder="Phone"> 
+
+   <label for="reg">Reg:</label><br>
+   <input  class='form-control' type="text" id="reg"placeholder="Reg"> 
+
+   <label for="dob">DOB:</label><br>
+   <input  class='form-control' type="text" id="dob" placeholder="DOB"> 
+
+   <label for="std">Standard:</label><br>
+   <input class='form-control'  type="text" id="std" placeholder="Standard"> 
+
+   <label for="sec">Section:</label><br>
+   <input class='form-control' type="text" id="sec" placeholder="Section"> 
+    
+
+   <label for="fname">Firstname:</label><br>
+   <input class='form-control' type="text" id="fname" placeholder="First Name"> 
+
+   <label for="lname">Last Name:</label><br>
+   <input  class='form-control'type="text" id="lname" placeholder="Last Name"> 
+
+   <label for="ffname">Full Name:</label><br>
+   <input  class='form-control' type="text" id="ffname"placeholder="Full Name"> 
+
+   <label for="address">Address:</label><br>
+   <input  class='form-control' type="text" id="address"placeholder="Address"> 
+
+   <label for="file">Profile picture:</label><br>
+
+   <input class='form-control'  type="file" id="file"> 
+
+   <button  class='warning'id="userdetail-btn">submit</button>
+
+  </div>
+  <div class="container2"></div>
+  
+  <script>
+    let token = localStorage.getItem("token")
+    $(document).ready(function(){ 
+      var user = localStorage.getItem('user_type')
+      if (user != 'is_admin' || token ){
+       return window.location.href = '/404'; 
+      }
+    let form =document.getElementById('userDetails')
+    const container2 = document.querySelector('.container2');
+    function userdetails() {
+        console.log(token)
+        fetch('https://schooltestproject.herokuapp.com/auth/user-details/', {
+          method: 'GET',
+          headers: new Headers({
+            'Authorization': 'token' + ' ' + token,
+            'Content-Type': 'application/json'
+          })
+        }).then(res => {
+          return res.json()
+        }).then(data => {
+          let table2 = '<table d-flex flex-wrap>';
+            table2 += `<thead class="thead">
+              <th scope="col">Email</th>
+              <th scope="col">Phone</th>
+              <th scope="col">FullName</th>
+              <th scope="col">FirstName</th>
+              <th scope="col">LastName</th>
+              <th scope="col">Date Of Birth</th>
+              <th scope="col">RegNo</th>
+              <th scope="col">Address</th>
+              <th scope="col">Standard</th>
+              <th scope="col">Section</th>
+              <th scope="col">Action</th>
+            </thead>`;
+            data.forEach((d, index) => {
+              if (`${d.user_type}`=='is_student'){
+              table2 = table2 + `<tbody d-flex flex-wrap><tr id=${d.id}>`;
+              table2 = table2 + '<td class="useremail">' + `${d.email}` + '</td>';
+              table2 = table2 + '<td class="userphone">' + `${d.phone}` + '</td>';
+              table2 = table2 + '<td class="userfullname">' + `${d.profile?.full_name}` + '</td>';
+              table2 = table2 + '<td class="userfirstname">' + `${d.profile?.first_name}` + '</td>';
+              table2 = table2 + '<td class="userlastname">' + `${d.profile?.last_name}` + '</td>';
+              table2 = table2 + '<td class="userDOB">' + `${d.date_of_birth}` + '</td>';
+              table2 = table2 + '<td class="userreg">' + `${d.register_number}` + '</td>';
+              table2 = table2 + '<td class="useraddress">' + `${d.profile?.address}` + '</td>';
+              table2 = table2 + '<td class="userstandard">' + `${d.profile?.standard}` + '</td>';
+              table2 = table2 + '<td class="usersection">' + `${d.profile?.section}` + '</td>';
+              table2 = table2 + '<td>' + `<a href=# id="edit" >Edit</a><a href=# id="delete" >delete</a>` + '</td></tbody>',
+              table2 = table2 + `</tr>`;
+        }})
+              table2 += "</table>";
+              container2.innerHTML = table2;
+        })
+      }userdetails();
+       container2.addEventListener('click',(e) => {
+       form_email= document.getElementById('email');
+       form_phone= document.getElementById('phone');
+       form_reg= document.getElementById('reg');
+       form_dob= document.getElementById('dob');
+       form_fname= document.getElementById('fname');
+       form_lname= document.getElementById('lname');
+       form_fullname= document.getElementById('ffname');
+       form_std= document.getElementById('std');
+       form_sec= document.getElementById('sec');
+       form_ad=document.getElementById('address');
+       button= document.getElementById('userdetail-btn');
+        e.preventDefault();
+        let delbutton = e.target.id == 'delete';
+        let editbutton = e.target.id == 'edit';
+        let id = e.target.parentElement.parentElement.id
+        console.log(id)
+                if(delbutton){
+          url="https://schooltestproject.herokuapp.com/auth/user-details/"
+          fetch(`${url}${id}/`,{
+            method : 'DELETE',
+          }).then(res => res.json()).then(() => location.reload())
+        }
+        if(editbutton){
+          form.style.display='block'
+          url="https://schooltestproject.herokuapp.com/auth/user-details/"
+          const parent = e.target.parentElement.parentElement;
+          console.log(parent)
+          let email = parent.querySelector(".useremail").textContent;
+          let phone= parent.querySelector('.userphone').textContent;
+          let reg = parent.querySelector('.userreg').textContent;
+          let dob = parent.querySelector('.userDOB').textContent;
+          let fullname = parent.querySelector('.userfullname').textContent;
+          let lastname= parent.querySelector('.userlastname').textContent;
+          let firstname= parent.querySelector('.userfirstname').textContent;
+          let standard= parent.querySelector('.userstandard').textContent;
+          let section= parent.querySelector('.usersection').textContent;
+          let address= parent.querySelector('.useraddress').textContent;
+          document.getElementById('email').value=email 
+          document.getElementById('phone').value=phone
+          document.getElementById('reg').value=reg
+          document.getElementById('dob').value=dob
+          document.getElementById('ffname').value=fullname
+          document.getElementById('lname').value=lastname
+          document.getElementById('fname').value=firstname
+          document.getElementById('std').value=standard
+          document.getElementById('sec').value=section
+          document.getElementById('address').value=address
+          d=JSON.stringify({ 'email':form_email.value, 'phone': form_phone.value, 'date_of_birth': form_dob.value, 'register_number': form_reg.value,
+          'first_name':form_fname.value,'last_name':form_lname.value,'standard':form_std.value,'section':form_sec.value,'full_name':form_fullname.value,'address':form_ad.value}
+          )
+          console.log(d)
+          button.addEventListener('click',()=>{
+            fetch(`${url}${id}/`,{
+              method : 'PATCH',
+              headers : {
+                'Content-Type' : 'application/json',
+                'Authorization':'token'+ +localStorage.getItem('token')
+              },
+              body:JSON.stringify({ 'email':form_email.value, 'phone': form_phone.value, 'date_of_birth': form_dob.value, 'register_number': form_reg.value,
+              'profile':{'first_name':form_fname.value,'last_name':form_lname.value,'standard':form_std.value,'section':form_sec.value,'full_name':form_fullname.value,'address':form_ad.value}}
+              )
+          }).then(res => console.log(res.json()),location.reload())
+        }) 
+      }
+    })
+    function logout(){
+      let token=localStorage.getItem("token")            
+      console.log(token)            
+      fetch('https://schooltestproject.herokuapp.com/auth/logout/',            
+      {            
+      method: 'GET',            
+      headers: {            
+      'Content-Type': 'application/json',            
+      'Authorization':'token'+' '+token          
+      // 'Content-Type': 'application/x-www-form-urlencoded',            
+      }            
+      }) .then(response => response.text())            
+      window.location.href='login'            
+      } 
+    })
+  </script>
+{% endblock %}

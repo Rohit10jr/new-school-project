@@ -1,0 +1,293 @@
+{% extends 'base.html' %}
+{% block index %}
+<div class="counts">
+</div>
+<div class="form">
+    <label for="standard">Grade </label>
+    <select name="standard" id="id_standard">
+        <option value="">-------</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+
+    </select>
+    <label for="section">section </label>
+    <select name="section" id="id_section">
+        <option value="">------</option>
+    </select>
+    <button onclick=userdetails_for_std()>Get</button>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <div class="list">
+
+    </div>
+</div>
+<script>
+    let students = []
+    let staffs = []
+    let staff_list = []
+    let standard, section;
+    let token = localStorage.getItem('token')
+
+    // function getsection(){
+    //    let standard = document.getElementById('id_standard')
+
+    // }
+
+
+    function userdetails() {
+
+        fetch('http://127.0.0.1:8000/api/user-details/', {
+            method: 'GET',
+            headers: new Headers({
+                'Authorization': 'token' + ' ' + localStorage.getItem('token'),
+                'Content-Type': 'application/json',
+            })
+        }).then(res => {
+            return res.json()
+        }).then(data => {
+            console.log(data)
+            data.forEach((d, index) => {
+                if (`${d.user_type}` == 'is_student') {
+                    students.push(d)
+                }
+                else if (`${d.user_type}` == 'is_staff') {
+                    staffs.push(d)
+                }
+                if (localStorage.getItem('user_type') == 'is_admin') {
+                    var content = ''
+                    content += `<h3>No.of.students : <span class='count'>${students.length}</span></h3>
+            <h3>No.of.staffs : <span class='count'>${staffs.length}</span></h3>`
+                    document.querySelector('.counts').innerHTML = content
+                    // get_result();
+                }
+            })
+        })
+    }
+    userdetails()
+    console.log(staffs, students)
+
+    function get_result(list) {
+        for (i = 0; i < list.length; i++) {
+
+            list[i]['result'] = []
+        }
+        url = new URL('http://127.0.0.1:8000/api/test-history/');
+
+
+        fetch(url,
+            {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'token' + ' ' + token,
+                },
+            }).then(function (response) {
+                return response.json()
+            }).then(data => {
+                console.log(data)
+                i = 0
+                data.forEach((d, index) => {
+                    i += 1
+                    console.log(d.subject)
+                    for (i = 0; i < list.length; i++) {
+                        if (list[i]['id'] == d.student_id) {
+                            list[i]['result'].push({ 'subject': d.subject, 'score': d.score, 'res': d.result })
+                        }
+                    }
+                    if (i == (data.length - 1)) {
+                        return list
+                    }
+                })
+
+            })
+    }
+
+    $("#id_standard").change(function () {
+        var url_for_change = 'http://127.0.0.1:8000/api/loadsection/';
+        standard = $(this).val();
+
+        $.ajax({
+            url: url_for_change,
+            data: {
+                'standard': standard
+            },
+            success: function (data) {
+                $("#id_section").html(data);
+            }
+        });
+
+    });
+
+    function userdetails_for_std() {
+
+        url_for_std = new URL('http://127.0.0.1:8000/api/user-details/')
+        url_for_std.searchParams.append('standard', standard);
+        section = document.getElementById('id_section').value
+        // url_for_std.searchParams.append('user_type','is_student')
+
+        fetch(url_for_std, {
+            method: 'GET',
+            headers: new Headers({
+                'Authorization': 'token' + ' ' + token,
+                'Content-Type': 'application/json',
+            })
+        }).then(res => {
+            return res.json()
+        }).then(data => {
+            console.log(data)
+            let content = '<table>'
+            list = data
+
+            for (i = 0; i < list.length; i++) {
+                if ((list[i].profile.section).toUpperCase() != section) {
+                    list.splice(i, 1);
+                    i -= 1
+                }
+                else {
+                    if (list[i].user_type != 'is_student') {
+                        staff_list.push(list[i])
+                        list.splice(i, 1);
+                        i -= 1
+                    } else {
+                        list[i]['result'] = []
+                    }
+                }
+            }
+
+            url = new URL('http://127.0.0.1:8000/api/test-history/');
+            url.searchParams.append('grade', standard)
+
+            fetch(url,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'token' + ' ' + token,
+                    },
+                }).then(function (response) {
+                    return response.json()
+                }).then(data => {
+                    console.log(data)
+                    i = 0
+                    data.forEach((d, index) => {
+
+                        i += 1
+                        console.log(d.subject)
+                        for (i = 0; i < list.length; i++) {
+                            if (list[i]['id'] == d.student_id) {
+                                list[i]['result'].push({ 'subject': d.subject, 'score': d.score, 'res': d.result })
+                            }
+                        }
+                    })
+                    console.log(list)
+
+                }).then(() => {
+                    list.forEach((d, index) => {
+                        let result = d.result
+                        d.overallscore = 0
+                        let score = 0
+                        console.log(i, 'hi')
+                        if (result.length) {
+
+                            for (i = 0; i < result.length; i++) {
+                                score += parseInt(result[i]['score'])
+                            }
+                            if (score) {
+                                score = parseInt(score / (result.length))
+                                d.overallscore = score
+                            }
+                        }
+                    })
+                    console.log(list[0].overallscore)
+                    console.log(list)
+                    list.sort((a, b) => {
+                        return b.overallscore
+                            - a.overallscore
+                            ;
+                    })
+
+                }).then(() => {
+                    console.log(list)
+                    let content = ''
+                    let pass = 0, total = 0, pass_percent = 0
+                    if (!staff_list.length && !list.length) {
+                        document.querySelector('.list').innerHTML = content
+                        return
+                    } else {
+                        let t;
+                        for (i = 0; i < list.length; i++) {
+                            t = list[i]
+                            if (t.result.length) {
+                                for (j = 0; j < t.result.length; j++) {
+                                    if ((list[i].result)[j].res == 'pass') {
+                                        pass += 1
+                                    }
+                                    total += 1
+                                }
+                            }
+                        }
+                        console.log(pass, total)
+                        pass_percent = parseInt((pass / total) * 100)
+
+                        content += `<div>
+           <p> <label>standard</label><span>: ${standard}</span></p>
+           <p> <label>section</label><span>: ${section}</span></p>
+           <p> <label>no of students </label> <span>: ${list.length} </span></p>
+           <p><label>class advisor</label><span>: ${staff_list.length ? staff_list[0].profile.full_name : 'No'}</span></p>
+           <p> <label>pass percentage</label><span>: ${pass_percent}</span></p>
+            </div>`
+                    }
+                    if (staff_list.length) {
+                        content += `<h1>staffs</h1>`
+                        content += `<table class='staff-table'>`
+                        content += `<tr><th>Sl.no</th><th>Register_no</th><th>Name</th></tr>`
+                        let no = 0
+                        staff_list.forEach((d, index) => {
+                            no += 1
+                            content += `<tr><td>${no}</td><td>${d.register_number}</td><td>${d.profile.full_name}</td></tr>`
+                        })
+                        content += `</table>`
+                    }
+                    if (list.length) {
+                        no = 0
+                        content += `<h1>students</h1>`
+                        content += `<table class='student-table'>`
+                        content += `<tr><th>Sl.no</th><th>Register_no</th><th>Name</th><th>Average score</th><th>Rank</th></tr>`
+                        let t = 0
+                        list.forEach((d, index) => {
+                            if (t != 0) {
+                                if (list[index - 1].overallscore != d.overallscore) {
+                                    t += 1
+                                }
+                            }
+                            else {
+                                t += 1
+                            }
+                            no += 1
+                            content += `<tr><td>${no}</td><td>${d.register_number}</td><td>${d.profile.full_name}</td><td>${d.overallscore}</td><td>${t}</td></tr>`
+                        })
+                        content += `</table>`
+                    }
+                    document.querySelector('.list').innerHTML = content
+                    document.querySelector('.list').style.border = '1px solid grey'
+                })
+
+
+        })
+    }
+
+
+
+</script>
+{% endblock %}

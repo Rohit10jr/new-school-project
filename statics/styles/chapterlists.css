@@ -1,0 +1,305 @@
+.box .back-btn {
+    margin-left: 105%;
+    margin-bottom: 8%;
+   
+}
+.chapter-cards{
+    font-family: 'Montserrat';
+    color:white;
+    font-weight: 400;
+}
+
+.fa-light {
+    font-size: 150%;
+    color: white;
+    margin-left: 12%;
+    margin-bottom: 2%;
+}
+
+.form-box input {
+    padding: 5px;
+    width: 100%;
+    margin-bottom: 10px;
+    color: black;
+    font-size: 15px;
+    border: none;
+    outline: none;
+}
+
+.chapter-edit-close .back-btn {
+    margin: auto;
+}
+
+#form-chaplist input {
+    width: 95%;
+}
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
+}
+
+.chapterhead {
+    text-align: center;
+}
+.form-box input[type=text] {
+    padding: 5px;
+    width: 100%;
+    margin-bottom: 10px;
+    color: black;
+    font-size: 15px;
+    border: none;
+}
+
+
+.chapterlist a {
+    color: white;
+    padding: 8px;
+}
+
+.chapterlist label {
+    color: black;
+    display: inline-block;
+    width: 100px;
+}
+.thead {
+    font-size: 15px;
+    color:rgba(255, 253, 253, 0.714);
+    text-align: justify;
+}
+
+.box {
+    margin: 14% 40%;
+    /* margin-top: 4%; */
+    width: 20%;
+    min-width: 200px;
+    padding: 2% 3%;
+    font-family: 'Montserrat';
+    border-radius: 5px;
+    background-color:#ffffff14;
+}
+
+p.chapter-edit-close {
+    text-align: end;
+}
+
+.box label {
+    width: 23%;
+}
+
+.chapter-table table,
+.chapter-table td,
+.chapter-table th {
+    text-align: center;
+    border: 1px solid #0000002e;
+}
+.chapter-table table {
+    background-color: rgb(74 65 65 / 29%);
+   
+}
+.chapter-table .btn {
+    margin-bottom: 2%;
+    margin-left: 20%;
+    color: white;
+}
+.chapter-table table {
+    color:white;
+    font-family: 'Poppins', sans-serif;
+}
+.chapterhead h4{
+    color: white;
+}
+
+.chapter-table #delete {
+    padding: 2% 5%;
+    margin-left: 0%;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 150%;
+}
+
+.chapter-table #edit {
+    padding: 2% 5%;
+    margin-left: 0vw;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 150%;
+}
+.chapterhead {
+
+    display: flex;
+    flex-flow: column;
+    margin-top: 12%;
+    text-align: center;
+}
+
+@media screen and (min-width:1024px) and (max-width:1200px) {
+
+    p.chapter-edit-close {
+        margin: 0;
+    }
+
+    .chapter-table {
+        width: 100%;
+        margin-top: 5%;
+    }
+    .thead {
+        font-size: 1.4vw;
+        white-space: nowrap;
+    }
+
+}
+
+@media screen and (min-width:1359px) and (max-width:1450px) {
+
+    /* .chapter-table {
+        margin-left: 18%;
+        width: 80%;
+        margin-top: 5%;
+    } */
+    #chapterlist-btn{
+        font-family: 'Poppins', sans-serif;
+    }
+    .form .back-btn {
+        margin-left: 103%;
+    }
+
+    .chapter-table {
+        margin-top: 5%;
+    }
+
+    .chapter-table #delete {
+        position: static;
+    }
+    
+    .thead {
+        font-size: 1.2vw;
+        white-space: nowrap;
+    }
+   
+}
+
+@media screen and (min-width:430px) and (max-width:800px) {
+
+ 
+        .box label {
+            font-size: 2.8vw;
+        }
+    
+
+    .chapter-table td {
+        text-align: center;
+        font-size: 100%;
+    }
+
+    .chapter-table th {
+        padding-left: 4%;
+    }
+
+    .box input[type=text] {
+        font-size: 13px;
+    }
+
+    #form-chaplist .back-btn {
+        color: white;
+        top: 3%;
+        right: 2%;
+        background-color: transparent;
+        font-size: 2vw;
+        outline: none;
+        position: absolute;
+        font-family: 'Poppins', sans-serif;
+        
+    }
+
+    .chapter-table table {
+        white-space: nowrap;
+        width: 70%;
+        margin-left: 15%;
+    }
+
+    .chapter-table thead {
+        font-size: 100%;
+    }
+
+    .chapter-table #edit {
+        font-size: 145%;
+    }
+    .thead {
+        font-size: 1.2vw;
+        color: black;
+        text-align: justify;
+    }
+    #chapterlist-btn{
+        font-family: 'Poppins', sans-serif;
+    }
+
+}
+
+@media screen and (max-width:500px) {
+    .box label {
+        margin-left: 5%;
+    }
+    #chapterlist-btn{
+        font-family: 'Montserrat';
+    }
+    .box label {
+        margin-left: 5%;
+    }
+
+    .box select {
+        margin-left: 5%;
+    }
+    .form .back-btn {
+        margin-left: 93%;
+    }
+
+    .chapter-table {
+        margin-top: 5%;
+        overflow: scroll;
+    }
+
+    .chapter-table table {
+        font-size: 65%;
+        font-family: 'Montserrat';
+        margin-left: 6%;
+        margin-top: 8%;
+        width: 128%;
+    }
+.chapterhead{
+    margin-top: 15%;
+    margin-left: 4%;
+}
+.chapter-table table{
+    font-size: smaller;
+}
+    .chapter-table #edit {
+        font-size: 155%;
+    }
+
+    .chapter-table #delete {
+        font-size: 155%;
+    }
+
+    .chapter-table table td {
+        text-align: center;
+    }
+    .thead {
+        font-size: 90%;
+        white-space: nowrap;
+    }
+
+    .thead {
+        font-size: 2.4vw;
+        white-space: nowrap;
+    }
+    .box {
+        margin: 14% 18.9%;
+    }
+    #delete-box-Modal-chapterlist .modal-content {
+        width: auto;
+        margin-left: auto;
+    }
+}

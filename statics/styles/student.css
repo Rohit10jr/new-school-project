@@ -1,0 +1,180 @@
+.table-heading{
+    background-color: aliceblue;
+    color: rgba(22,34,57,0.95);
+}
+#add{
+    font-family: 'Montserrat'
+}
+.container2 thead th:last-child {
+    text-align: start;
+}
+.container2{
+    overflow: auto;
+}
+#add :focus {
+    outline-style: inherit;
+}
+#addstudent{
+    font-family: 'Montserrat';
+}
+.sort-input {
+    margin-left: 14%;
+    margin-top: 6%;
+    width: 17%;
+}
+#usr #edit{
+
+    margin-right: 23%;
+
+}
+    .--user {
+        width: 100%;
+        border-radius: 5px;
+        font-size: 123%;
+        margin-left: 0%;
+        margin-top: 4%;
+        background-color: rgb(255 248 220 / 94%);
+        box-shadow: rgb(50 50 93 / 25%) 0px 2px 5px -1px, rgb(0 0 0 / 30%) 0px 1px 3px -1px;
+    }
+
+.--staff {
+    border-radius: 5px;
+    margin-left: 23%;
+    background-color: rgb(255 248 220 / 94%);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+.standards-list {
+    position: absolute;
+    margin-left: 101%;
+    margin-top: 0%;
+    background-color: #edc81452;
+    padding: 1%;
+    width: 21%;
+}
+#action {
+    padding-left: 2vh;
+}
+
+
+.userDetails input[type=file] {
+
+    margin: 0;
+}
+
+
+@media screen and (min-width:1024px) and (max-width:1200px) {
+    #sort {
+        width: 9vw;
+    }
+    .container2 {
+        width: 100%;
+    }
+
+    .container2 thead th:last-child {
+        text-align: start;
+        padding-left: 3vw;
+    }
+
+    .--user {
+        font-size: 15px;
+        margin-left: 6%;
+        margin-top: 2%;
+        background-color: rgb(255 248 220 / 94%);
+
+    }
+
+    .--user #edit {
+        padding: 0.5% 2%;
+        margin-left: -2%;
+        border-radius: 5px;
+        position: absolute;
+        font-size: 102%;
+    }
+
+    .--user #delete {
+        margin-top: 0vh;
+        margin-left: 5vw;
+        padding: 3%;
+        font-size: 113%;
+    }
+
+    .--staff {
+        background-color: cornsilk;
+        margin-left: 4%;
+        margin-top: 8%;
+    }
+
+    .--staff #delete {
+        margin-top: 0vh;
+        margin-left: 5vw;
+    }
+
+    .--staff #edit {
+        padding: 7px 15px;
+        margin-left: -2%;
+        border-radius: 5px;
+        position: absolute;
+    }
+
+    #action {
+        padding-left: 4vh;
+    }
+}
+
+@media screen and (min-width:1359px) and (max-width:1450px) {
+
+    .container2 {
+        width: 100%;
+        font-family: 'Montserrat'
+    }
+
+    .container2 thead th:last-child {
+        text-align: start;
+        padding-left: 3vw;
+    }
+
+    .container2 #edit {
+        width: 5vw;
+        padding: 5px 15px;
+        margin-left: -1vw;
+        border-radius: 5px;
+        height: 1%;
+    }
+    .--user {
+        font-size: 15px;
+        margin-left: 4%;
+        margin-top: 4%;
+        width: 93%;
+        background-color: rgb(255 248 220 / 94%);
+    }
+
+    .--user #delete {
+        padding: 4px 14px;
+        margin-left: -1%;
+        border-radius: 5px;
+        margin-top: 0;
+        position: absolute;
+    }
+
+    #sort {
+        width: 9vw;
+    }
+
+    .--staff {
+        margin-top: 5%;
+        font-size: 15px;
+        width: 97%;
+        margin-left: 2%;
+    }
+    #action {
+        padding-left: 5vh;
+    }
+}
+
+ @media screen and (max-width:375px) {
+
+    button#standard_add_btn {
+        margin: 0% 0% 2%;
+    }
+} 

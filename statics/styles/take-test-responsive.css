@@ -1,0 +1,232 @@
+.grey {
+    background-color: #CFD2CF;
+    border: none;
+    border-radius: 5px;
+}
+
+.red {
+    background-color: #FF7878;
+    border: none;
+    border-radius: 5px;
+}
+
+.green {
+    background-color: #5BB318;
+    border: none;
+    border-radius: 5px;
+}
+
+#submit {
+    display: none;
+}
+
+.answer {
+    width: 20px;
+    height: 20px;
+    background-color: #5BB318;
+    border: 1px solid rgba(0, 0, 0, .2);
+    margin-bottom: 7%;
+}
+
+.answer p {
+    margin: 0% 167%;
+}
+
+.un-answer {
+    width: 20px;
+    height: 20px;
+    background-color: #FF7878;
+    border: 1px solid rgba(0, 0, 0, .2);
+    margin-bottom: 7%;
+}
+
+.un-answer p {
+    margin: 0% 167%;
+}
+
+.un-visited {
+    width: 20px;
+    height: 20px;
+    background-color: #CFD2CF;
+    border: 1px solid rgba(0, 0, 0, .2);
+}
+
+.un-visited p {
+    margin: 0% 167%;
+}
+
+.testreview {
+    margin-left: 26%;
+}
+
+.testreview table,
+.testreview td,
+.testreview th {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+.testreview td {
+    padding: 2%;
+}
+
+
+@media screen and (max-width:600px) {
+    .instructions {
+        text-align: justify;
+        padding: 7% 7% 0% 2%;
+    }
+
+    .question-direction {
+        display: flex;
+        flex-direction: column-reverse;
+        margin: 27%;
+        justify-content: normal;
+    }
+
+    .question-path {
+
+        width: 117%;
+        margin-left: -4%;
+        gap: 7%;
+        height: 2em;
+        margin-top: 13%;
+    }
+
+    .question-path div {
+
+        height: 84%;
+        width: 84%;
+        padding: 7%;
+    }
+
+    .answer-data p {
+        width: 105%;
+    }
+
+    #counter {
+        font-size: 1rem;
+        width: 18%;
+        margin: 3% 77%;
+        padding: 0;
+    }
+
+    .close {
+        margin-left: 93%;
+        border: none;
+    }
+
+    .delete-box {
+        margin-left: 6%;
+    }
+
+    .sm-close {
+        position: absolute;
+        margin: -12% 55%;
+    }
+
+}
+
+@media screen and (min-width:700px) and (max-width:800px) {
+
+    .question-path {
+        display: grid;
+        grid-template-columns: auto auto auto auto auto;
+        text-align: center;
+        width: 26%;
+        margin-top: 3%;
+        margin-left: 0%;
+        gap: 5%;
+        height: 2em;
+    }
+
+
+    .question-path div {
+        height: 84%;
+        width: 84%;
+        padding: 5%;
+    }
+
+
+}
+
+@media screen and (min-width:700px) and (max-width:800px) {
+
+    .question-path {
+        display: grid;
+        grid-template-columns: auto auto auto auto auto;
+        text-align: center;
+        margin-left: 25%;
+        margin-top: 1%;
+        gap: 0%;
+        row-gap: -21%;
+        height: 3em;
+    }
+
+
+    .question-path div {
+        height: 66%;
+        width: 73%;
+        padding: 7%;
+    }
+
+}
+
+
+@media screen and (max-width:600px) {
+    .instructions {
+        text-align: justify;
+        padding: 7% 7% 0% 2%;
+    }
+
+    .question-direction {
+        display: flex;
+        flex-direction: column-reverse;
+        margin: 27%;
+        justify-content: normal;
+    }
+
+    .question-path {
+        width: 117%;
+        margin-left: -4%;
+        gap: 7%;
+    }
+
+    .answer-data p {
+        width: 105%;
+    }
+
+    #counter {
+        font-size: 1rem;
+        width: 18%;
+        margin: 3% 77%;
+        padding: 0;
+    }
+
+    .close {
+        margin-left: 93%;
+        border: none;
+    }
+
+    .delete-box {
+        margin-left: 6%;
+    }
+
+    .sm-close {
+        position: absolute;
+        margin: -12% 55%;
+    }
+
+}
+
+@media screen and (min-width:700px) and (max-width:800px) {
+    .question-path {
+        display: grid;
+        grid-template-columns: auto auto auto auto;
+        text-align: center;
+        width: 24%;
+        margin-left: 0%;
+        gap: 5%;
+        height: auto;
+    }
+}

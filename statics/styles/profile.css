@@ -1,0 +1,194 @@
+        .profile-container {
+            font-family: 'Cinzel', serif;
+        }
+        .container{
+            margin-top: 7rem;
+        }
+        .profile-back-btn {
+            margin-left: 96%;
+        }
+        #profile-box input {
+            width: 100%;
+        }
+        #profile-box i{
+            float:right
+        }
+        #profile-edit {
+            position: absolute;
+            bottom: 8%;
+            right: 8%;
+            font-size: 159%;
+        }
+        .image {
+            text-align: center;
+        }
+        .image img {
+            border-radius: 50%;
+            width: 100px;
+        }
+        .occupation {
+            margin-top: 21%;
+        }
+
+        .standard-edit li {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .standard-edit li {
+            margin-bottom: 5%;
+        }
+
+        .standard-details select {
+            width: 90%;
+            margin: 0% 5%;
+        }
+
+        .standard-details select#sec {
+            margin-bottom: 3%;
+        }
+
+        .standard-edit {
+            position: absolute;
+            background-color: #5c7aea;
+            top: 17%;
+            right: 31%;
+            padding: 1%;
+            border-radius: 7%;
+        }
+        #profile-box {
+            background-color: #ffffff14;;
+            display: none;
+            color: black;
+            width: 20%;
+            box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
+            margin-top: 11vh;
+            padding: 30px 43px;
+            text-align: center;
+            margin-bottom: 4%;
+            border-radius: 5px;
+            margin-left: 42%;
+        }
+
+
+        .user {
+            color: white;
+            box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
+            margin-top: 5%;
+            font-size: 18px;
+            border-radius: 5px;
+            position: relative;
+        }
+        .user label {
+            width: 100px;
+            display: inline-block;
+            color: bisque;
+        }
+
+        .profile-content {
+            padding: 5%;
+            flex-basis: 80%;
+            text-align: left;
+            margin-bottom: 5%;
+            color:white;
+        }
+        .profile-head {
+            padding: 8% 12%;
+            text-align: center;
+            background-color: #ededed32;
+            flex-basis: 20%;
+            line-height: 150%;
+        }
+        .profile-label {
+            display: inline;
+        }
+        .fullname {
+            display: inline;
+        }
+
+        .firstname {
+            display: inline;
+        }
+
+        .lastname {
+            display: inline;
+        }
+
+        .std {
+            display: inline;
+        }
+
+        .sec {
+            display: inline;
+        }
+
+        .address {
+            display: inline;
+        }
+@media screen and (min-width:1024px) and (max-width:1200px) {
+    #profile-box {
+        width: 35vw;
+        margin-top: 1%;
+    }
+    .standard-edit {
+        top: 10%;
+        right: 17%;
+    }
+
+    #profile-box input[type='text'] {
+        margin-bottom: 1vh;
+    }
+
+   
+}
+@media screen and (min-width:1359px) and (max-width:1450px) {
+    #profile-box {
+        width: 27vw;
+    }
+
+    .standard-edit {
+        top: 20%;
+        right: 24%;
+    }
+
+    #profile-box input[type='text'] {
+        margin-bottom: 1vh;
+    }
+
+}
+@media screen and (min-width:430px) and (max-width:800px) {
+    .standard-edit {
+        top: 12.5%;
+        right: 9%;
+    }
+    .user {
+        margin: 8% 17%;
+    }
+}
+@media screen and (max-width:500px) {
+    .standard-edit {
+        position: static;
+    }
+
+    #profile-box {
+        display: none;
+        width: 76%;
+        margin-bottom: 0;
+        margin-left: 8%;
+    }
+
+    .user {
+        width: 100%;
+        display: block;
+        margin: 0;
+    }
+
+    .profile-content {
+        padding-bottom: 26%;
+    }
+    #profile-btn {
+        /* margin-left: 27%; */
+        margin-top: 2%;
+    }
+
+}

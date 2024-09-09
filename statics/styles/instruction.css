@@ -1,0 +1,36 @@
+.instructionForm{
+    margin-top: 5%;
+    margin-left: 33%;
+    color: white;
+}
+#id_instruction {
+    resize: none;
+}
+
+
+.instructions {
+    margin-left: 1%;
+    margin-top: 2%;
+}
+
+@media screen and (min-width:1024px) and (max-width:1200px) {
+
+}
+@media screen and (min-width:1359px) and (max-width:1450px) {}
+@media screen and (min-width:430px) and (max-width:800px) {
+
+    #instruction-btn {
+        margin-left: 77%;
+        width: 22%;
+    }
+}
+@media screen and (max-width:420px) {
+
+    .instructionForm textarea {
+        width: 270%;
+    }
+    #instruction-btn {
+        margin-left: 200%;
+        width: 40%;
+    }
+}

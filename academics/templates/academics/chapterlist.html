@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block chapterlist %}
+<script src="https://kit.fontawesome.com/e732652cab.js" crossorigin="anonymous"></script>
+{% load static %}
+<!-- get chapter form -->
+<div class="form-box">
+    <div class="box panel-group col-md-6 col-7 col-lg-4" id="mediabox">
+
+        {% csrf_token %}
+        <p class="grade-p form-group "><label for=""> Grade: </label>
+            <select class="grade-in-form form-control " onchange=getgradename(this) name="grade" required="" id="id_grade"></select>
+        </p>
+        <!--   <label for=""> Grade: </label>
+        <select name="grade" required="" id="id_grade">
+            <option value="" selected="">---------</option>
+          </select>-->
+        <label for=""> Subject: </label>
+        <select name="subject" onchange=getsubjectname(this) class="form-control" required="" id="id_subject">
+            <option value="" selected="">---------</option>
+        </select>
+        <div class="text-center">
+        <button id="chapterlist-btn" class="btn btn-warning mt-3 md-btn-md" onclick=getchapter()>Getchapters</button>
+    </div>
+    </div>
+</div>
+
+<!-- message pop up -->
+<div class="modal fade" id="messageModal-chapterlist" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" id="close-btn" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="messages container-fluid">
+
+                </div>
+                <div class="error-messages container-fluid">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="message-close-btn" class="btn btn-secondary"
+                    data-dismiss="modal">Close</button>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- delete confirm pop up -->
+<div class="modal fade" id="delete-box-Modal-chapterlist" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" id="close-btn" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="delete-box">
+                    <h4>Are you want to delete?</h4>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="delete-btn-yes" data-dismiss="modal" class="delete-btn-yes btn btn-danger">Yes</button>
+                <button id="delete-btn-no" data-dismiss="modal" class="delete-btn-no btn btn-primary">Back</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Edit form  -->
+<div class="modal fade" id="chapter-edit-popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-white" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div>
+                
+            
+                {% csrf_token %}
+                {{form2.as_p}}
+                <button class="btn btn-warning" data-toggle="modal" data-target="#messageModal-chapterlist"
+                    id="chapter-btn">Submit</button>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary width-3 mr-" data-dismiss="modal">Close</button>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- chapter-list -->
+<div class="chapter-table">
+
+</div>
+
+<!-- chapter edit form -->
+
+<div class="messages container-fluid">
+</div>
+<div class="error-message container-fluid">
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<script>
+
+</script>
+<div class="material-symbols-outlined">
+
+</div>
+<div class="chapters">
+
+</div>
+<script src="{% static 'script_files/chapterlist.js' %}" type="text/javascript"></script>
+{% endblock %}

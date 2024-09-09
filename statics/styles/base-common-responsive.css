@@ -1,0 +1,177 @@
+table{
+    letter-spacing: 0.5px;
+
+}
+@media screen and (min-width:1024px) and (max-width:1200px) {
+
+}
+@media screen and (min-width:1359px) and (max-width:1450px) {
+    .already {
+        margin-left: 45vw;
+    }
+
+    #edit {
+        margin-left: 20vw;
+        border-radius: 5px;
+    }
+    .chapter-btns {
+        display: flex;
+        justify-content: space-around;
+        margin: 7%;
+    }
+    .back-btn {
+        margin-left: 88%;
+        color: black;
+        margin-top: -2vh;
+        background-color: transparent;
+    }
+
+    .back-btn :focus {
+        outline: none;
+    }
+}
+@media screen and (min-width:430px) and (max-width:800px) {
+    .back-btn {
+        margin-left: 56vw;
+        color: black;
+        height: 0;
+        margin-top: -1vh;
+        background-color: transparent;
+        font-size: 1.5vw;
+        font-family: 'Montserrat';
+        margin-top: -2vh;
+        outline: none;
+        position: absolute;
+    }
+    .modal-content {
+        width: auto;
+        margin-left: auto;
+    }
+    #bach-btn {
+        margin-left: -11vw;
+    }
+    .back-btn-nav {
+        display: block;
+    }
+    .back-btn-nav button {
+        background-color: transparent;
+        color: white;
+        font-size: 2.5vw;
+        font-family: 'Montserrat';
+    }
+
+    .back-btn-nav button:focus {
+        outline: none;
+    }
+
+    .back-btn-nav {
+        display: block;
+        background-color: transparent;
+        text-align: right;
+        margin-right: 7%;
+    }
+    form.userDetails input {
+        width: 144%;
+    }
+   
+}
+@media screen and (max-width:420px) {
+    .back-btn-nav {
+        display: block;
+    }
+
+    .navbar-nav :first-child:hover {
+        background-color: transparent;
+        color: white;
+    }
+
+    .navbar-nav {
+        background-color: #14279b;
+        width: 32vw;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        font-size: 6vw;
+        font-family: 'Montserrat';
+        position: fixed;
+        top: 0;
+    }
+
+    .back-btn-nav button {
+        background-color: transparent;
+        color: white;
+    }
+    .back-btn-nav button:focus {
+        outline: none;
+    }
+
+    .back-btn-nav {
+        display: block;
+        background-color: transparent;
+        text-align: right;
+        margin-right: 7%;
+    }
+
+    .navbar li a {
+        font-size: 2.7vw;
+        font-family: 'Montserrat';
+        color: white;
+        padding: 15%;
+        margin: 0;
+    }
+    .navbar-light .navbar-toggler-icon {
+        width: 18px;
+    }
+    .modal-footer {
+        justify-content: center;
+    }
+    #QFormModal .modal-content {
+        width: 100%;
+        margin-top: 16%;
+        margin-left: 0%;
+    }
+    #Form-modal-content {
+         width: auto;
+         margin-left: auto;
+    }
+    button#delete-btn-yes {
+        font-size: 10px;
+        font-family: 'Montserrat';
+    }
+    button#delete-btn-no {
+        font-size: 10px;
+        font-family: 'Montserrat';
+    }
+    .delete-box {
+        text-align: center;
+        font-size: 10px;
+        font-family: 'Montserrat';
+        background-color: #b2c8df;
+    }
+    #delete-box-Modal .modal-content{
+        width: auto;
+        margin: 0;
+    }
+    #edit {
+        padding: 7px 15px;
+        font-size: 158%;
+        margin-left: -13%;
+        border-radius: 5px;
+    }
+    #back-btn {
+        margin-left: 6%;
+        padding: 1% 2%;
+        font-size: 11px;
+        font-family: 'Montserrat';
+    }
+    .text-center {
+        text-align: center !important;
+        margin-top: 5%;
+        font-family: 'Montserrat';
+    }
+    .userDetails {
+        display: grid;
+        grid-template-columns: auto;
+    }
+}

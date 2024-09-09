@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="grade-container">
+  <div class="grade-list">
+
+  </div>
+  <br>
+  <div class="subjects-by-grade">
+
+  </div>
+  <div id="grade">
+
+    {% csrf_token %}
+    {{form.as_p}}
+
+    <button id="grade-btn" onclick=creategrade()>Create</button>
+  </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</script>
+<script>
+  var host = window.location.protocol + "//" + window.location.host;
+  var token = localStorage.getItem('token')
+  $(document).ready(function () {
+    var user = localStorage.getItem('user_type')
+    if (user != 'is_admin' || !token) {
+      window.location.href = `${host}/404`;
+    }
+    else {
+      function creategrade() {
+        var grade = document.getElementById('id_grade').value
+        let csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        fetch('http://127.0.0.1:8000/api/grades/',
+          {
+            method: 'POST',
+            body: JSON.stringify({ 'grade': grade }
+            ),
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'token' + ' ' + token,
+              'X-CSRFToken': csrftoken
+            },
+          })
+
+          .then(function (response) {
+            if (response.ok) {
+              console.log("Sucess response", response)
+              return response.json();
+            } else {
+              throw new Error("Could not reach the API: " + response.statusText);
+            }
+          }).then(function (data) {
+            console.log(data)
+          }).catch(function (error) {
+            console.log(error.message)
+          });
+        return true;
+      }
+
+      var list = document.querySelector('.grade-list');
+
+      function get() {
+        var content = '<div class="cards">'
+        fetch('http://127.0.0.1:8000/api/grades/', {
+          method: 'GET',
+          headers: {
+            'Authorization': 'token' + ' ' + token
+          },
+        }).then(res => {
+          return res.json()
+        }).then(data => {
+          console.log(data.data)
+          data.data.forEach((d, index) => {
+            content = content + `  <div class="card" onclick=getsubject(${d.grade}) id=${d.id}>
+        <p class="grade">${d.grade}</p>
+ </div>`
+
+          })
+          content += '</div>'
+          list.innerHTML = content;
+
+        })
+      };
+      get();
+
+      var container = document.querySelector('.subjects-by-grade')
+
+      function getsubject(grade_val) {
+        console.log(grade_val);
+
+        url2 = new URL('http://127.0.0.1:8000/api/subject-list/');
+        url2.searchParams.append('grade', grade_val);
+        var content = '<div class="cards">'
+        fetch(url2, {
+          method: 'GET',
+          headers: {
+            'content-Type': 'application/json',
+            'Authorization': 'token' + ' ' + token,
+          }
+        }).then(res => {
+          return res.json()
+        }).then(data => {
+
+          data.forEach((d, index) => {
+
+            content = content + `  <div class="card" id=${d.id}>
+        <p> Grade : <span class="grade">${d.grade_name}</span></p>
+        <p> Subject : <span class="name">${d.name}</span></p>
+        <p> Subject-code : <span class="code">${d.code}</span></p>
+        <br>
+        <p> <a class='text-white" href=# id="edit" >Edit</a> <a style="color:blue;" href=# id="delete" >delete</a></p>
+ </div>`
+          });
+          container.innerHTML = content;
+          list.innerHTML = ''
+        })
+      }
+    }
+  })
+</script>
+{% endblock %}

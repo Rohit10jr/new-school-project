@@ -1,0 +1,27 @@
+.chat {
+  right: 2%;
+  bottom: 11%;
+  height: 51vh;
+  width: 17vw;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.132);
+  position: fixed;
+  border: 2px solid #00bfff7a;
+  border-radius: 5px;
+}
+.chatdiv i:hover {
+  cursor: pointer;
+}
+#bot-text {
+  margin-top: 36vh;
+}
+@media screen and (min-width: 425px) and (max-width: 768px) {
+  .chat {
+    width: 39vw;
+  }
+}
+@media  screen and (min-width:768px)and (max-width:1200px){
+    .chat {
+        width: 29vw;
+      }
+}

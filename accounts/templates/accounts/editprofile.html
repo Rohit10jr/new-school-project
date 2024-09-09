@@ -1,0 +1,127 @@
+{% extends 'base.html'%}
+{% block user%}
+
+  <div class="userDetails">
+  <input type="email" id='email' placeholder="Email"> 
+   <input type="phone" id="phone"placeholder="Phone"> 
+   <input type="text" id="reg"placeholder="Reg"> 
+   <input type="text" id="dob" placeholder="DOB"> 
+   <input type="text" id="std" placeholder="Standard"> 
+   <input type="text" id="sec" placeholder="Section"> 
+   <input type="text" id="fname" placeholder="First Name"> 
+   <input type="text" id="lname" placeholder="Last Name"> 
+   <input type="text" id="ffname"placeholder="Full Name"> 
+   <input type="text" id="address"placeholder="Address"> 
+   <input type="file"> 
+   <button id="submit">submit</button>
+  </div>
+  <h1>Profile</h1>
+  <div class="container2"></div>
+  
+  <script>
+   
+    const container2 = document.querySelector('.container2');
+    function userdetails() {
+     
+        let token = localStorage.getItem("token")
+        console.log(token)
+        fetch('https://schooltestproject.herokuapp.com/auth/user-details/', {
+          method: 'GET',
+          headers: new Headers({
+            'Authorization': 'token' + ' ' + token,
+            'Content-Type': 'application/json'
+          })
+        }).then(res => {
+          return res.json()
+        }).then(data => {
+          console.log('data', data)
+          let htmlSegment = ''
+          data.forEach((d, index) => {
+            htmlSegment = htmlSegment + `<div class="user" id='${d.id}'>
+            <p class="email">${d.email}</p>
+            <p class="phone">${d.phone}</p>
+            <p class="fullname">${d.profile?.full_name}</p>
+            <p class="firstname">${d.profile?.first_name}</p>
+            <p class="lastname">${d.profile?.last_name}</p>
+            <p class="DOB">${d.date_of_birth}</p>
+            <p class="reg">${d.register_number}</p>
+            <p class="address">${d.profile?.address}</p>
+            <p class="standard">${d.profile?.standard}</p>
+            <p class="section">${d.profile?.section}</p>
+            <a href=#" id='edit'>Edit</a>&nbsp<a href="#" id="delete">Delete</a></div>`
+          });
+          container2.innerHTML = htmlSegment;
+        })
+      }
+  
+       container2.addEventListener('click',(e) => {
+      
+       form_email= document.getElementById('email');
+       form_phone= document.getElementById('phone');
+       form_reg= document.getElementById('reg');
+       form_dob= document.getElementById('dob');
+       form_fname= document.getElementById('fname');
+       form_lname= document.getElementById('lname');
+       form_fullname= document.getElementById('ffname');
+       form_std= document.getElementById('std');
+       form_sec= document.getElementById('sec');
+       form_ad=document.getElementById('address');
+       button= document.getElementById('submit')
+        e.preventDefault();
+        let delbutton = e.target.id == 'delete';
+        let editbutton = e.target.id == 'edit';
+        let id = e.target.parentElement.id
+        console.log(id)
+        if(delbutton){
+          url="https://schooltestproject.herokuapp.com/auth/user-details/"
+          fetch(`${url}${id}/`,{
+            method : 'DELETE',
+          }).then(res => res.json()).then(() => location.reload())
+        }
+        if(editbutton){
+          url="https://schooltestproject.herokuapp.com/auth/user-details/"
+          const parent = e.target.parentElement;
+          let email = parent.querySelector(".email").textContent;
+          let phone= parent.querySelector('.phone').textContent;
+          let reg = parent.querySelector('.reg').textContent;
+          let dob = parent.querySelector('.DOB').textContent;
+          let fullname = parent.querySelector('.fullname').textContent;
+          let lastname= parent.querySelector('.lastname').textContent;
+          let firstname= parent.querySelector('.firstname').textContent;
+          let standard= parent.querySelector('.standard').textContent;
+          let section= parent.querySelector('.section').textContent;
+          let address= parent.querySelector('.address').textContent;
+          document.getElementById('email').value=email 
+          document.getElementById('phone').value=phone
+          document.getElementById('reg').value=reg
+          document.getElementById('dob').value=dob
+          document.getElementById('ffname').value=fullname
+          document.getElementById('lname').value=lastname
+          document.getElementById('fname').value=firstname
+          document.getElementById('std').value=standard
+          document.getElementById('sec').value=section
+          document.getElementById('address').value=address
+          c=document.getElementById('email').value
+          console.log(c)
+          d=JSON.stringify({ 'email': email, 'phone': phone,'register_number': reg, 'date_of_birth': dob, 
+          'profile':{'first_name':firstname,'last_name':lastname,'full_name':fullname,'standard':standard,'section':section,'address':address}}
+           )
+     
+          console.log(d)
+          button.addEventListener('click',()=>{
+            fetch(`${url}${id}/`,{
+              method : 'PUT',
+              headers : {
+                'Content-Type' : 'application/json',
+                'Authorization':'token'+ +localStorage.getItem('token')
+              },
+              body:JSON.stringify({ 'email':form_email.value, 'phone': form_phone.value, 'date_of_birth': form_dob.value, 'register_number': form_reg.value,
+              'profile':{'first_name':form_fname.value,'last_name':form_lname.value,'standard':form_std.value,'section':form_sec.value,'full_name':form_fullname.value,'address':form_ad.value}}
+              )
+          }).then(res => console.log(res.json()))
+        }) 
+      }
+    
+    });
+  </script>
+{% endblock %}

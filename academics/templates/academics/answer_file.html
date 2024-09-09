@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    h1,h3,h4{
+        text-align: center;
+    }
+    
+</style>
+<body>
+
+
+<h1> SCHOOLS </h1>
+<h1>EXAMINATION 2022 </h1>
+<h3>CLASS -{{grade}} </h3>
+<h3>Subject: {{subject}} </h3>
+
+<div class="questions">
+    {% for answer in answers %}
+
+    <p> {{ forloop.counter }}. &nbsp; {{answer}}</p>
+
+    {% endfor %}
+</div>
+</body>

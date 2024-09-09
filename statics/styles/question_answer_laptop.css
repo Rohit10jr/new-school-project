@@ -1,0 +1,169 @@
+@media screen and (min-width:1024px) and (max-width:1200px) {
+    .sort-input input[type=text]{
+        width: 26%;
+    }
+}
+  .questionanswer input[type=text]{
+        width: 91.5%;
+    }
+    .question_create {
+        display: none;
+        grid-template-columns: auto auto auto;
+        padding: 2vh;
+        width: 80vw;
+        height: 47vh;
+        grid-gap: 0.5vw;
+        background-color: #b2c8df;
+        margin-left: 8.5vw;
+        margin-top: 6vh;
+        position: fixed;
+        z-index: 1;
+    }
+
+    .question_create .back-btn {
+        margin-left: 76vw;
+        color: black;
+        height: 0;
+        margin-top: 2vh;
+        background-color: transparent;
+        font-size: 1.5vw;
+        outline: none;
+        position: absolute;
+    }
+
+ 
+
+    .question-card {
+        background-color: #ffffff32;
+    border-radius: 5px;
+    border: 1px solid #00bfff7a;
+    font-family: 'Montserrat';
+    }
+
+    .question-list fieldset {
+        grid-template-columns: auto auto auto;
+    }
+
+    .question-card p {
+        color: rgba(0, 0, 0, 0.753);
+        width: 101%;
+        display: block;
+        font-weight: bold;
+        font-size: 1vw;
+    }
+
+    .questionlist {
+        display: grid;
+        grid-template-columns: auto auto;
+        gap: 1%;
+        column-gap: 0vh;
+        margin-top: -1170px;
+        margin-left: -116px;
+    }
+
+    .question-card p:nth-child(8),
+    .question-card p:nth-child(9),
+    .question-card p:nth-child(10),
+    .question-card p:nth-child(11),
+    .question-card p:nth-child(12) {
+        margin-left: 20vw;
+    }
+    .question_create {
+        display: none;
+    }
+
+    .question_create label {
+        font-size: 1.2vw;
+    }
+
+
+    #questionForm {
+        display: none;
+    }
+@media screen and (min-width:1359px) and (max-width:1450px) {
+    .grid-item {
+        font-size: 10px;
+    }
+    form.questionanswer{
+        grid-template-columns: auto auto auto;
+    }
+    #question-box button {
+        border: none;
+        border-radius: 5px;
+        font-family: 'Montserrat';
+        font-size: 15px;
+        margin-top: 1vh;
+        /* margin-left: 5vw; */
+    }
+.question-card p {
+    color: rgba(0, 0, 0, 0.753);
+    width: 100%;
+    display: block;
+    font-weight: bold;
+    font-size: 1.2vw;
+}
+.question-list #delete {
+    margin-left: auto;
+}
+
+.question-list #edit {
+    margin-left: 3%;
+    border-radius: 5px;
+}
+
+.question-card p:nth-child(8),
+.question-card p:nth-child(9),
+.question-card p:nth-child(10),
+.question-card p:nth-child(11),
+.question-card p:nth-child(12) {
+    margin-left: 20vw;
+}
+.question_create {
+    display: none;
+}
+
+   
+
+.question_create {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    padding: 4vh;
+    width: 64vw;
+    height: 53vh;
+    background-color: #b2c8df;
+    margin-left: 20vw;
+    margin-top: 5vh;
+    z-index: 4;
+    position: fixed;
+}
+
+
+
+.question-btn {
+    width: 12vh;
+    height: 31px;
+    margin-top: -1vh;
+    margin-left: 52vw;
+    margin-bottom: 17px;
+    background-color: #b2c8df;
+    color: #14279b;
+    border: 1px solid #14279b;
+    position: absolute;
+    font-family: 'Montserrat';
+}
+.question-list #delete {
+    margin-left: 6%;
+}
+.question-list fieldset {
+    grid-template-columns: auto auto auto;
+}
+.question_create label {
+    font-size: 1vw;
+    margin-bottom: 0.2vh;
+}
+#questionForm {
+    display: none;
+}
+
+
+}

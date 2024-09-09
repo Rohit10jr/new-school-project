@@ -1,0 +1,127 @@
+@media screen and (min-width:430px) and (max-width:800px) {
+    .userDetails {
+        grid-template-columns: auto auto;
+    }
+
+
+    .--user {
+        margin-top: 1%;
+        margin-left: 2%;
+        font-size: 12px;
+    }
+
+    .--user th:last-child {
+        padding-left: 1%;
+        position: absolute;
+        margin-left: 3%;
+    }
+    #sort {
+        width: 10vw;
+    }
+
+    .--staff {
+        margin-left: 4%;
+        font-size: 1.2vw;
+        width: 20vw;
+        white-space: nowrap;
+        margin-top: 8%;
+    }
+
+    #action {
+        padding-left: 1%;
+    }
+}
+
+@media screen and (max-width:420px) {
+    .userDetails {
+        grid-template-columns: auto;
+    }
+    .sort-input input {
+        width: 68%;
+    }
+
+    .--user #edit {
+        font-size: 150%;
+        margin-left: -26%;
+    }
+
+    .--user #delete {
+        padding: 1%;
+        margin-left: 1%;
+        border-radius: 5px;
+        margin-top: -69%;
+        font-size: 150%;
+    }
+
+    .--user {
+        overflow-x: scroll;
+    }
+
+
+
+    .--staff #edit {
+        padding: 7px 4px;
+        font-size: 150%;
+        display: inline;
+        margin-left: 8%;
+        border-radius: 5px;
+    }
+
+    #action {
+        padding-left: 2%;
+    }
+
+    .--staff #action {
+        padding-left: 4%;
+    }
+
+    .--staff #delete {
+        padding: 7px 15px;
+        margin-left: 0%;
+        border-radius: 5px;
+        font-size: 150%;
+        display: inline;
+    }
+
+    .--staff {
+        font-size: 15px;
+        margin-left: 8%;
+        margin-top: 16%;
+    }
+    #userdetail-btn {
+        font-size: 12px;
+        margin-top: 2vh;
+        margin-left: 7%;
+    }
+
+    #sort {
+        width: 17%;
+        position: absolute;
+        padding: 1.2%;
+        margin-left: 23%;
+        margin-top: 0%;
+    }
+    
+    div#delete-user-Modal .modal-content,#delete-staff-Modal .modal-content{
+        width: auto;
+        margin-left: auto;
+    }
+    #confirmationuser h3{
+        font-size: 14px;
+    }
+    #delete-user-Modal #yes,#delete-user-Modal #no,#delete-staff-Modal #yes,#delete-staff-Modal #no{
+        font-size: 10px;
+    }
+    #Form-modal-content {
+        width: 96%;
+        background-color: #b2c8df;
+        padding: 2% 5%;
+        margin-left: 5%;
+    }
+    #student-Form-modal-content {
+        width: 92%;
+        margin-left: 5%;
+        padding: 2% 5%;
+        background-color: #b2c8df;
+    }
+    }

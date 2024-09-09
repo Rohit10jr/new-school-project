@@ -1,0 +1,86 @@
+
+body{
+    background-image: url('./img/background.jpg');
+}
+label {
+    font-size: 15px;
+    color: white;
+}
+select {
+    padding: 4px;
+    width: 91%;
+   
+    border: none;
+    outline: none;
+    display: grid;
+}
+a:active {
+    text-decoration: none;
+    color: white;
+}
+
+th {
+    text-align: start;
+}
+
+td {
+    padding: 10px;
+    text-align: start;
+}
+
+h1 {
+    color: #000000;
+    font-size: 35px;
+    font-weight: 300;
+    margin-top: -69px;
+    margin-left: -75px;
+    text-align: center;
+    font-family: 'Montserrat';
+}
+
+button {
+    font-family: 'Montserrat';
+   
+}
+
+table {
+    white-space: nowrap;
+}
+.inner{
+    display: block;
+}
+@media screen and (min-width:1024px) and (max-width:1200px) {
+    th {
+        padding: 10px;
+        text-align: revert;
+    }
+}
+@media screen and (min-width:1359px) and (max-width:1450px) {
+    td {
+        padding: 10px;
+        font-size: 1vw;
+        text-align: start;
+    }
+    th {
+        padding: 10px;
+    }
+}
+@media screen and (min-width:430px) and (max-width:800px) {
+    .sort-input input[type=text] {
+        width: 32%;
+    }
+}
+@media screen and (max-width:420px) {
+    th {
+        padding: 4px;
+    }
+    input[type=file] {
+        width: 30vw;
+    }
+   .sort-input input[type=text]{
+        width: 65%;
+    }
+   input[type=text],input[type=email],input[type=phone] {
+        width: 90%;
+    }
+}

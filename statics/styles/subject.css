@@ -1,0 +1,193 @@
+
+        .subject-title {
+            margin-right: 6%;
+            margin-bottom: 0%;
+        }
+
+        .subjects-by-grade label {
+            width: 100px;
+            display: inline-block;
+            color: #000000;
+        }
+        .subject-title {
+            margin-right: 6%;
+            margin-bottom: 0%;
+        }
+
+        .subjects-by-grade label {
+            width: 100px;
+            display: inline-block;
+            color: #000000;
+        }
+
+        .subjects-by-grade a {
+            display: inline;
+            color: white;
+        }
+
+        .subject-title-subjects {
+            margin-right: 36%;
+            font-family: 'Cinzel', serif;
+            font-weight: 600;
+        }
+
+        .subjects-by-grade .subject-card {
+            background-color: #dcddff66;
+            padding: 2%;
+            margin: 3%;
+            font-family: 'Montserrat';
+            font-weight: 400;
+            color:white;
+        }
+
+        .subject-list {
+            width: 170%;
+            margin-top: 5%;
+        }
+
+        option {
+            font-size: 16px;
+        }
+
+        .subject-list label {
+            width: 10%;
+        }
+
+       
+        #gradeforsubject {
+            margin-left: 55%;
+            padding-left: 10px;
+        }
+
+        .subject-container {
+            display: flex;
+            margin-top: 5vh;
+            justify-content: space-around;
+        }
+
+        .subject-container-1 input {
+            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+        }
+
+        .subject-container-1 {
+            flex-basis: 60%;
+            margin-left: 5%;
+        }
+
+        .subject-container-2 {
+            flex-basis: 30%;
+            margin-right: 5%;
+        }
+
+        .subject-container-1 .cards {
+            display: grid;
+            height: auto;
+            width: 55%;
+            grid-template-columns: auto auto auto;
+            gap: 50px;
+        }
+
+        .subject-container-1 .card {
+            height: auto;
+            padding: 14%;
+            font-size: 16px;
+            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        }
+
+
+@media screen and (min-width:1024px) and (max-width:1200px) {
+
+
+    .subjects-by-grade .cards {
+        margin: 0% 4% 15%;
+    }
+
+    #subject-tittle {
+        margin-left: 1.5vw;
+    }
+
+    .container2 {
+        width: 100%;
+    }
+
+    .subjects-by-grade .subject-card {
+        width: 24vw;
+        height: auto;
+    }
+
+}
+@media screen and (min-width:1359px) and (max-width:1450px) {
+
+
+    .subjects-by-grade .subject-card {
+        width: 24vw;
+        border-radius: 10px;
+        height: auto;
+    }
+    .subjects-by-grade .cards {
+        margin: 0% 1% 15%;
+        height: auto;
+    }
+    .subject-card #edit {
+        margin-left: 1vw;
+    }
+
+}
+@media screen and (min-width:430px) and (max-width:800px) {
+<<<<<<< HEAD
+    .subjects-by-grade {
+        margin-left: -5vw;
+    }
+=======
+>>>>>>> 39da8ddc8963b33d3e95927ca2f6507b1ddff80c
+    .subjects-by-grade hr {
+        margin-left: 35%;
+    }
+    .subject-title-subjects {
+        margin-right: 26%;
+    }
+
+}
+@media screen and (max-width:420px) {
+    .subjects-by-grade .subject-card {
+        padding: 7% 12%;
+        cursor: pointer;
+        font-size: 16px;
+        box-shadow: rgb(100 100 111 / 20%) 0px 7px 29px 0px;
+    }
+
+    h3.subject-title-subjects {
+        font-size: 17px;
+        margin-left: 41%;
+    }
+
+    span#subject-title {
+        font-size: 20px;
+    }
+    .subject-card #edit {
+        margin-left: 1vw;
+        font-size: 150%;
+        margin-top: 0;
+    }
+
+    /*     margin-left: 6%;
+    padding: 1% 2%;
+    font-size: 11px;
+} */
+    .subject-card #delete {
+        margin-left: 1vw;
+        /* width: 41%; */
+        /* height: 46%; */
+        color: #850b0b;
+    }
+
+
+    .subject-title-subjects {
+        margin-left: -3%;
+    }
+
+    .subjects-by-grade .subject-card {
+        padding: 7% 8%;
+    }
+}

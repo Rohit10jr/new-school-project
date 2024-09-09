@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+    <title>Document</title>
+    <style>
+        .login {
+            margin-left: 670px;
+            color: white;
+            border-radius: 5px;
+            margin-top: 310px;
+            width: 360px;
+            padding: 10px;
+            padding-left: 65px;
+            font-family: 'Montserrat'; sans-serif;
+        }
+        input[type=file] {
+            border: none;
+            margin-left: 116px;
+            margin-top: -9px;
+            position: absolute;
+        }
+        a {
+            text-decoration: none;
+            color: black;
+            font-family: 'Montserrat'; sans-serif;
+            margin-left: 155px;
+        }
+        body {
+            background-color: #ebebeb;
+            background-size: cover;
+        }
+
+        .container {
+            width: 100%;
+            padding-top: 60px;
+            padding-bottom: 100px;
+        }
+
+        .frame {
+            height: 425px;
+            width: 430px;
+            background-color: #ffffff;
+            background-size: cover;
+            margin-left: auto;
+            margin-right: auto;
+            border-top: solid 1px rgba(255, 255, 255, .5);
+            border-radius: 5px;
+            box-shadow: 0px 2px 7px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            transition: all .5s ease;
+            padding-top: 107px;
+            padding-left: 60px;
+            margin-top: 200px;
+        }
+        h1 {
+            color: #000000;
+            font-size: 35px;
+            font-weight: 300;
+            margin-top: -69px;
+            margin-left: -75px;
+            text-align: center;
+            font-family: 'Montserrat'; sans-serif;
+        }
+        button {
+            width: 133px;
+            outline: none;
+            height: 39px;
+            border: none;
+            border-radius: 25px;
+            background-color: #555555;
+            color: white;
+            margin-top: 55px;
+            margin-left: 115px;
+            font-family: 'Montserrat'; sans-serif;
+            font-size: 17px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        input{   
+            outline: none;
+        }
+        input[type=email]{
+            padding: 10px;
+            width: 230px;
+            margin-bottom: 4px;
+            margin-left: 54px;
+            height: 30px;
+        }
+        input[type=phone]{
+            padding: 10px;
+            width: 230px;
+            height: 30px;
+            margin-top: 64px;
+            margin-left: 54px;
+        }
+    </style>
+</head>
+<body>
+  
+        <div class="frame">
+            <h1>Login</h1>
+                {% csrf_token %}
+                <input type="email" id="id_email" /><br>
+                <input type="phone" id="id_phone" />
+                <button onclick="login()">Login</button><br>
+                <a href="#" onclick="signup()">Signup</a>
+        </div>
+    <script>
+        function login() {
+            var email = document.getElementById('id_email').value
+            var phone = document.getElementById('id_phone').value
+            fetch('https://schooltestproject.herokuapp.com/auth/simple-login/',
+                {
+                    method: 'POST',
+                    body: JSON.stringify({ 'email': email, 'phone': phone }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                        // 'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("data=", data)
+                    console.log("email=1", data.data.email)
+                    console.log("tokendata=", data.data.token)
+                    localStorage.setItem("email", data.data.email)
+                    localStorage.setItem("token", data.data.token);
+                    if (email == localStorage.getItem("email")) {
+                        window.location.href = 'home'
+                    }
+                })
+        }
+        function signup() {
+            window.location.href = 'signup'
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<div id="message">
+
+</div>
+<div class="question-paper-list">
+</div>
+
+
+<script>
+  const container2 = document.querySelector('.question-paper-list');
+  var messages = document.getElementById('message')
+  var token = localStorage.getItem('token')
+  $(document).ready(function () {
+    var user = localStorage.getItem('user_type')
+    if (user != 'is_admin' || !token) {
+      return window.location.href = '/404';
+    }
+  })
+  blank_url = 'https://schooltestproject.herokuapp.com'
+  for_answer = '/academics/question-paper/'
+  url = 'http://127.0.0.1:8000/academics/question-paper-list/'
+  function get() {
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        'content-Type': 'application/json',
+        'Authorization': 'token' + ' ' + token,
+        // 'X-CSRFToken': csrftoken
+      }
+    }).then(res => res.json()).then(data => {
+      console.log(data)
+      let content = '';
+      data.forEach((d, index) => {
+        content = content + `<div class="question-paper-card" id='${d.id}'>
+
+<p >Grade : <span class="grade">${d.grade}</span></p>
+
+<p >Subject : <span class="subject">${d.subject}</span></p>
+
+<p>File: <a href='${blank_url}${d.file}'  class="file">${d.file}</a></p>
+
+<p >created_by : <span class="created_by">${d.created_by}</span></p>
+
+<p >created_at : <span class="created_at">${d.created_at}</span></p>
+
+<ul > No of questions : ${d.no_of_questions} </ul>
+
+<button id="get-answer" >Get Answer file</button> 
+<p> <a href='' class='ans-file'>download</a></p> 
+</div>
+`
+
+      })
+      container2.innerHTML = content;
+
+    })
+  };
+  get();
+
+  //   const container = document.querySelector('.question-paper-card')
+  container2.addEventListener('click', (e) => {
+    e.preventDefault();
+    let getbutton = e.target.id == 'get-answer';
+    let id = e.target.parentElement.id;
+    console.log(e.target.parentElement.id)
+    let parent = e.target.parentElement
+
+    // url = `${blank_url}${for_answer}${id}/?type=file`
+
+    var data = { "KEY": "VALUE" };
+    var url = new URL(`${blank_url}${for_answer}${id}/`);
+    url.searchParams.append('type', 'file');
+
+    if (getbutton) {
+      fetch(url, {
+        method: 'GET',
+        headers: {
+          'content-Type': 'application/json',
+          'Authorization': 'token' + ' ' + token,
+          // 'X-CSRFToken': csrftoken
+        }
+      }).then((resp) => resp.json()).then(response => {
+        console.log(url)
+        // if (response.status == 200) {
+        //   console.log("Sucess response", response)
+        // } else {
+        //   console.log('invalid')
+        // }
+        console.log(response.path)
+          `<div class="questionpath">download your pdf file<a href="${blank_url}${response.path}"> here</a></div>
+                       
+                      </div>`
+        console.log(`${blank_url}${response.path}`)
+      })
+    }
+  });
+
+
+
+</script>
+{% endblock %}

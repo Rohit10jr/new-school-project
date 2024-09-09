@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block question %}
+
+<div class="questionbox">
+
+  {% csrf_token %}
+  {{form.as_p}}
+  <button id="chapter-btn" onclick=getquestion()>Get</button>
+  <button id="save-button" onclick=savequestion()>Save</button>
+
+</div>
+
+
+
+<script>
+  var host = window.location.protocol + "//" + window.location.host;
+  var token = localStorage.getItem("token")
+  $(document).ready(function () {
+    var user = localStorage.getItem('user_type')
+    if (user != 'is_admin' || !token) {
+      return window.location.href = '/404';
+    }
+  })
+  function savequestion() {
+
+    var grade = document.getElementById('id_grade').value
+    var subject = document.getElementById('id_subject').value
+    var no_of_question = document.getElementById('id_no_of_questions').value
+    console.log(grade + subject)
+    url = new URL('http://127.0.0.1:8000/api/question-paper/')
+    url.searchParams.append('type', 'save');
+    let csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    console.log(url)
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({ 'grade': grade, 'subject': subject, 'number_of_questions': no_of_question }
+      ),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'token' + ' ' + token,
+        'X-CSRFToken': csrftoken
+      },
+    }).then(response => response.json()).then(data => {
+      console.log(data)
+      if (data.status == 'success') {
+        let path = `
+      <div class="questionpath container-fluid">download your pdf file <p><a href="https://schooltestproject.herokuapp.com${data.data.file}"> here</a></p>
+         <p> Grade : ${data.data.grade} </p>
+         <p> Subject : ${data.data.subject} </p>
+         <p> Created_by : ${data.data.created_by} </p>
+         <p> Number_of_questions : ${data.data.no_of_questions} </p>
+         <p> Created Time : ${data.data.created_at} </p>
+         </div>`;
+        let questionPath = document.querySelector('.questionPath')
+        questionPath.innerHTML = path;
+      } else {
+        console.log(data.data)
+        let questionPath = document.querySelector('.questionPath')
+        if (data.data) {
+          questionPath.innerHTML = data.data
+        } else {
+          questionPath.innerHTML = data.detail
+        }
+
+      }
+    })
+  }
+
+  function getquestion() {
+
+    var grade = document.getElementById('id_grade').value
+    var subject = document.getElementById('id_subject').value
+    var no_of_question = document.getElementById('id_no_of_questions').value
+    console.log(grade + subject)
+    let csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    fetch('http://127.0.0.1:8000/api/question-paper/', {
+      method: 'POST',
+      body: JSON.stringify({ 'grade': grade, 'subject': subject, 'number_of_questions': no_of_question }
+      ),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'token' + ' ' + token,
+        'X-CSRFToken': csrftoken
+      },
+    }).then(response => response.json()).then(data => {
+      console.log(data)
+      if (data.status == 'success') {
+        let path = `
+      <div class="questionpath container-fluid"> <p> download your question-paper pdf file<a href="https://schooltestproject.herokuapp.com${data.question_path}"> here</a> </p>
+       
+       <p> download your answer-paper pdf file<a href="https://schooltestproject.herokuapp.com${data.answer_path}" download="question-file.pdf"> here</a> </p>
+       </div>
+            
+        </div>`;
+        let questionPath = document.querySelector('.questionPath')
+        questionPath.innerHTML = path;
+      } else {
+        if (data.data) {
+          questionPath.innerHTML = data.data
+        } else {
+          questionPath.innerHTML = data.detail
+        }
+      }
+
+
+    })
+  }
+
+
+</script>
+
+<div class="questionPath">
+  <!-- <iframe id="download_iframe" style="display:none;"></iframe>
+          <script>
+            function Download()
+            document.getElementById('download_iframe').src = "/example/example.txt";
+          </script>   -->
+</div>
+{% endblock %}

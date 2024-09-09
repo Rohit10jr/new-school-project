@@ -1,0 +1,118 @@
+.history-container-form {
+    width: 30%;
+    margin: 12% 39%;
+    padding: 2% 3%;
+    line-height: 2;
+    color: white;
+    background-color: #292c4070;
+}
+.history-container-form label{
+    color: antiquewhite;
+    font-family: 'Montserrat';
+}
+.test-result-btn{
+    font-family: 'Montserrat';
+}
+
+
+/* .history-container-form button.btn.btn-sm.btn-primary {
+    margin: 10% 36% 0%;
+    border-color: #fff8dc;
+     */
+
+
+     .history-container-div {
+        background-color: #f8f9fa14;
+        overflow-x: auto;
+        color: white;
+    }
+
+
+.history-container table,
+.history-container th,
+.history-container td {
+    border: 1px solid#00000017;
+    border-collapse: collapse;
+}
+
+.history-container button {
+    margin-bottom: 1%;
+}
+
+.history-container-div table button {
+    width: 87%;
+    border: 1px solid #00000030;
+}
+.history-container-div table button:focus{
+    outline-style: inherit;
+}
+
+.history-container span.test-heading {
+    text-transform: capitalize;
+    font-size: 30px;
+}
+
+.history-container p.heading {
+    display: flex;
+    justify-content: space-around;
+}
+
+.history-container-form select {
+    width: 100%;
+}
+
+.history-container-head {
+    margin: 1% 15%;
+}
+
+/* @media screen and (min-width:1024px) and (max-width:1200px) {
+    .history-container-form {
+        width: 33%;
+        margin: 4% 37%;
+    }
+}
+
+@media screen and (min-width:1359px) and (max-width:1450px) {
+    #test-details-model .modal-content {
+        width: 100%;
+        margin-left: -1%;
+        padding: 2% 5%;
+        background-color: #b2c8df;
+    }
+}
+
+@media screen and (min-width:430px) and (max-width:800px) {
+    .history-container-div th:last-child {
+        position: static;
+    }
+
+    .history-container-form {
+        width: 38%;
+        margin: 3% 30%;
+    }
+
+    .history-container-div {
+        width: 85%;
+        margin: 2% 15%;
+    }
+}*/
+
+@media screen and (max-width:600px) {
+    .history-container-form {
+        width: 66%;
+        margin: 16% 19%;
+        padding: 2% 3%;
+        line-height: 2;
+        color: white;
+        background-color: #292c4070;
+    }
+
+.history-container-form {
+    margin: 12% 22%;
+} 
+}
+@media screen and (min-width:601px) and (max-width:901px) {
+    .history-container-form {
+        margin: 11% 26%;
+    }
+} 

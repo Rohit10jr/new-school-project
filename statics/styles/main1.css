@@ -1,0 +1,112 @@
+.navbar-expand-lg .navbar-nav .nav-link {
+  padding-left: 3.5rem;
+}
+.navbar{
+    background-color: rgba(22,34,57,0.95);
+    border-bottom: 1px solid #ffffff59;
+  
+}
+.navbar-light .navbar-nav .nav-link {
+  color: rgba(217, 217, 217, 0.778);
+}
+.navbar img{
+  width: 5%;
+}
+.navbar-nav {
+  margin-left: 7%; 
+  font-size: 1.3em;
+}
+.btn-secondary{
+  color:black;
+  background-color: white
+}
+.para{
+  margin-left: 12%;
+  line-height: 1.6;
+  margin-top: 17%;
+}
+.footer {
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  position: fixed;
+}
+  @media screen and (min-width:1000px) and (max-width:1024px) {
+    .login-box {
+      margin-left: -4%;
+      padding: 6%;
+      border-radius: 3%;
+    }
+
+    .navbar-nav {
+      margin-left: 3vh;
+    }
+    .already {
+      margin-left: 35vw;
+    }
+
+  }
+  
+  @media screen and (min-width:1366px) and (max-width:1440px) {
+    .login-box {
+      width: 41vw;
+      margin-left: 8%;
+    }
+  }
+
+
+  @media screen and (min-width:430px) and (max-width:780px) {
+    .footer {
+      margin-top: 17vw;
+      background-color: #E6E6E6;
+    }
+
+    .navbar-nav {
+      margin-left: 0px;
+
+    }
+    .para{
+      margin-top: 15%;
+    }
+  }
+
+  @media screen and (max-width:420px) {
+
+    .login-box {
+      margin-top: 57%;
+      margin-left: 9%;
+    }
+
+    .para {
+      padding: 7%;
+      text-align: justify;
+      color: black;
+    }
+    .img-fluid {
+      display: none;
+    }
+    .login-box h1 {
+      margin-left: 0;
+    }
+
+    #getstarted {
+
+      margin-left: 23%;
+
+    }
+
+    footer {
+      margin-top: 214px;
+    }
+
+    .already {
+      margin-left: 24%;
+    }
+
+    .login {
+      color: #212529;
+      margin-left: -19%;
+      font-weight: bolder;
+    }
+  }

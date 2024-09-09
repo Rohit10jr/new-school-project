@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block question-bank %}
+<div id="question"></div>
+<script>
+    $(document).ready(function () {
+        var user = localStorage.getItem('user_type')
+        if (user != 'is_admin' || !token) {
+            return window.location.href = '/404';
+        }
+    })
+    token = localStorage.getItem('token')
+    uri = 'https://schooltestproject.herokuapp.com'
+    function get() {
+        var content = ''
+        fetch('http://127.0.0.1:8000/api/question-paper-list/', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'token' + ' ' + token
+            },
+        }).then(res => {
+            return res.json()
+        })
+            .then(data => {
+                console.log(data)
+                data.data.forEach((d, index) => {
+                    content = content + `<div class='question-bank'>
+                        <p>${d.grade}&nbsp${d.subject_name}</p>
+                        <p> Question-paper pdf file  <a onclick=downloadfile('${uri}${d.file}')> -  download </a> </p>
+                    </div>`
+                })
+                document.getElementById('question').innerHTML = content
+            })
+    }
+    get();
+    function downloadfile(uri) {
+        var link = document.createElement("a");
+        link.download = 'answer';
+        link.href = uri;
+        console.log(link)
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        delete link;
+    }
+
+
+</script>
+{% endblock %}

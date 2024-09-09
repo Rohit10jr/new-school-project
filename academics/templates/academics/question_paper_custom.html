@@ -1,0 +1,526 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="question-paper-form" id="q-form">
+
+    <div class="q-form" id="q-form-1">
+        {% csrf_token %}
+
+        <p><label for="id_grade">Grade:</label>{{form.grade}} </p>
+        <!-- <p><label for="id_grade">Grade:</label><select name="grade" onchange=getgradename(this) required="" id="id_grade">
+            <option value="" selected="">---------</option>
+          </select> </p> -->
+        <p><label for="id_subject">Subject:</label> <select name="subject" onchange=getsubjectname(this) required=""
+                id="id_subject">
+                <option value="" selected="">---------</option>
+            </select></p>
+        <p><label for="id_no_of_questions">No of questions:</label> <input type="text" name="no_of_questions"
+                maxlength="20" required="" id="id_no_of_questions"></p>
+        <p class="chapter-btns">
+            <button id="next-btn" class="submit-btn btn btn-primary" onclick=getnext()>Next</button>
+
+        <div class="error-form-1"></div>
+    </div>
+
+    <div class="q-form-2" id="q-form-2">
+        {{custom_form.as_p}}
+        <div class="error-form-2"></div>
+        <p class="chapter-btns">
+            <button id="back-btn" class="btn btn-primary" onclick=get()>Back</button>
+            <button id="customize-btn" class="submit-btn btn btn-primary" onclick=get_customize()>Customize</button>
+            <button id="next-btn" class="submit-btn btn btn-primary" onclick=without_customize()>Next</button>
+        </p>
+    </div>
+    <div class="q-form-3" id="q-form-3">
+        {% csrf_token %}
+        <p> <label for="grade">GRADE</label> <span id="grade_value"></span> </p>
+        <p> <label for="subject">SUBJECT</label> <span id="subject_value"></span> </p>
+        <p> <label for="chapter">CHAPTER</label> <span id="chapter_value"></span> </p>
+        <p> <label for="no_of_questions">NO_OF_QUESTIONS</label> <span id="No_of_questions"></span> </p>
+        <p> <label for="remarks">REMARKS</label>{{test_form.remarks}}</p>
+        <p> <label for="remarks">DESCRIPTION</label>{{test_form.description}}</p>
+        <p> <label for="remarks">PASS PERCENTAGE</label>{{test_form.pass_percentage}}</p>
+        <span class="back-btn-review"></span>
+        <button id="next-btn" class="submit-btn btn btn-primary" onclick=submit()>Create test</button>
+        </p>
+    </div>
+
+    <div class="q-form-4" id="q-form-4" style="display: block;">
+        <p><label for="id_chapter_get">Chapters :</label> <select name="chapters" onchange=getcustomize_details()
+                required="" id="id_chapter_get">
+                <option value="" selected="">---------</option>
+            </select>
+        </p>
+        <p class="knowledge"><label for="">Knowledge</label> <input min="0" type="number" name="" id="id_knowledge"></p>
+        </p>
+        <p class="knowledge"><label for=""> Comprehension </label> <input min="0" type="number" name=""
+                id="id_comprehension"></p>
+        <p class="knowledge"><label for=""> Application </label> <input min="0" type="number" name=""
+                id="id_application">
+            <span class="more-btn"> </span>
+        <p class="chapter-btns">
+            <span class="back-btn"><button id="next-btn" class="submit-btn btn btn-primary"
+                    onclick="getnext()">Back</button></span>
+            <span class="next-btn"><button id="next-btn" class="submit-btn btn btn-primary"
+                    onclick=with_customize()>Next</button></span>
+        </p>
+        <div class="customize-details">
+
+        </div>
+        <div class="custom-error">
+
+        </div>
+    </div>
+    <div class="q-form-5" id="q-form-5">
+        <div class="messages"></div>
+        <div class="error-messages"></div>
+    </div>
+
+</div>
+
+<script>
+    var messages = document.querySelector('.messages')
+    var token = localStorage.getItem('token')
+    let error_messages = document.querySelector('.error-messages')
+    let grade_id, subject_id, grade, subject_name, no_of_questions, overall_marks = null;
+    let timing = null, chapters, from_chapter, to_chapter, from_chapter_id = null, to_chapter_id = null;
+    let all_chapter, result = [], questions_total = 0, customize = false;
+    let question_paper_id, userId, user_type, chapters_list = [];
+    var content = ''; da = null
+    let customize_details = document.querySelector('.customize-details')
+    let csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    let chapter_name_list = []
+    document.getElementById('q-form-2').style.display = 'none';
+    document.getElementById('q-form-3').style.display = 'none';
+    document.getElementById('q-form-4').style.display = 'none';
+    document.getElementById('nav-questionpaper').style.opacity = '0.5';
+    // document.getElementById('id_grade').setAttribute("onchange", getgradename());
+    $(document).ready(function () {
+        var user = localStorage.getItem('user_type')
+        if (user != 'is_admin' || !token) {
+            return window.location.href = '/404';
+        }
+
+    })
+    function get() {
+        document.getElementById('q-form-1').style.display = 'block';
+        document.getElementById('q-form-2').style.display = 'none';
+        document.getElementById('q-form-3').style.display = 'none';
+        document.getElementById('q-form-4').style.display = 'none';
+    }
+
+    $("#id_grade").change(function () {
+        var url_for_change = 'http://127.0.0.1:8000/api/ajax/load-subject/';
+        grade_id = $(this).val();
+        // grade_name = $(this).options[this.selectedIndex].text
+        getgradename(this)
+
+        $.ajax({
+            url: url_for_change,
+            data: {
+                'grade': grade_id
+            },
+            success: function (data) {
+                $("#id_subject").html(data);
+            }
+        });
+
+    });
+
+    $('#id_subject').change(function () {
+        var url_for_change = 'http://127.0.0.1:8000/api/ajax/load-subject/';
+        subject_id = $(this).val();
+
+        $.ajax({
+            url: url_for_change,
+            data: {
+                'subject': subject_id
+            },
+            success: function (data) {
+                $("#id_chapter").html(data),
+                    $("#id_to_chapter").html(data),
+                    $("#id_from_chapter").html(data)
+                $('#id_chapter_get').html(data)
+            }
+        });
+    });
+
+
+    function getcustomize_details() {
+
+        let chapter_id = parseInt(document.getElementById('id_chapter_get').value)
+        let current_index = null
+        if (result.length) {
+            for (i = 0; i < chapters_list.length; i++) {
+                if (result[i]) {
+                    if (result[i]['id'] == chapter_id) {
+                        current_index = i
+                        break
+                    }
+                }
+            }
+        }
+        if (current_index != null) {
+            document.getElementById('id_knowledge').value = result[current_index]['cognitive_level']['knowledge']
+            document.getElementById('id_comprehension').value = result[current_index]['cognitive_level']['comprehension']
+            document.getElementById('id_application').value = result[current_index]['cognitive_level']['application']
+        }
+        else {
+            document.getElementById('id_knowledge').value = 0
+            document.getElementById('id_comprehension').value = 0
+            document.getElementById('id_application').value = 0
+        }
+    }
+
+
+    function getsubjectname(sel) {
+        subject_name = sel.options[sel.selectedIndex].text;
+        console.log(subject_name);
+    }
+
+    function getgradename(sel) {
+        grade = sel.options[sel.selectedIndex].text;
+        console.log(grade);
+    }
+
+    function getnext() {
+        no_of_questions = parseInt(document.getElementById('id_no_of_questions').value);
+        if (isNaN(grade_id) || isNaN(subject_id)) {
+            if (!isNaN(grade_id)) {
+                document.querySelector('.error-form-1').innerHTML = "<li style='color:white'>subject is a required field </li>"
+            }
+            else if (!isNaN(subject_id)) {
+                document.querySelector('.error-form-1').innerHTML = "<li style='color:white;'>grade is a required field</li>"
+            }
+            else {
+                document.querySelector('.error-form-1').innerHTML = "<li style='color:white;'>grade and subject are required field</li>"
+            }
+            return
+        }
+        if (!isNaN(no_of_questions)) {
+            url = new URL('http://127.0.0.1:8000/api/question/');
+            url.searchParams.append('grade', grade_id);
+            url.searchParams.append('subject', subject_id)
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'content-Type': 'application/json',
+                    'Authorization': 'token' + ' ' + token,
+                }
+            }).then(res => {
+                return res.json()
+            }).then(data => {
+                console.log(data)
+                da = data
+                console.log(data['data'].length)
+                if (no_of_questions > data['data'].length) {
+                    document.querySelector('.error-form-1').innerHTML = `<li style='color:white;'>given number of questions is higher than the actual number of question</li><li style='color:white;'> number of question available is ${data['data'].length}</li>`
+                    return
+                }
+
+                customize = false
+                document.getElementById('q-form-1').style.display = 'none';
+                document.getElementById('q-form-2').style.display = 'block';
+                document.getElementById('q-form-3').style.display = 'none';
+                document.getElementById('q-form-4').style.display = 'none';
+                result = []
+
+            })
+        } else {
+
+            customize = false
+            document.getElementById('q-form-1').style.display = 'none';
+            document.getElementById('q-form-2').style.display = 'block';
+            document.getElementById('q-form-3').style.display = 'none';
+            document.getElementById('q-form-4').style.display = 'none';
+            result = []
+        }
+        document.querySelector('.error-form-1').innerHTML = '';
+        url3 = ('http://127.0.0.1:8000/api/chapter-list/');
+        fetch(url3, {
+            method: 'POST',
+            body: JSON.stringify({ 'grade': grade, 'subject': subject_name }
+            ),
+            headers: {
+                'content-Type': 'application/json',
+                'Authorization': 'token' + ' ' + token,
+            }
+        }).then(res => {
+            return res.json()
+        }).then(data => {
+            chapters_list = data.data
+            console.log(chapters_list)
+        })
+    }
+
+    function get_customize() {
+        customize = true
+        document.getElementById('q-form-1').style.display = 'none';
+        document.getElementById('q-form-2').style.display = 'none';
+        document.getElementById('q-form-3').style.display = 'none';
+        document.getElementById('q-form-4').style.display = 'block';
+        // document.getElementById('q-form-5').style.display = 'block';
+        console.log('back', subject_id)
+        var url_for_change = 'http://127.0.0.1:8000/api/ajax/load-subject/';
+
+        $.ajax({
+            url: url_for_change,
+            data: {
+                'subject': subject_id
+            },
+            success: function (data) {
+                $("#id_chapter_get").html(data)
+            }
+        });
+        document.querySelector('.more-btn').innerHTML = `<button id="next-btn" class="submit-btn btn btn-primary" onclick=add()>Add More</button>`
+        document.querySelector('.next-btn').innerHTML = `<button id="next-btn" class="submit-btn btn btn-primary">Review</button>`
+        document.querySelector('.back-btn').innerHTML = `<button id="next-btn" class="submit-btn btn btn-primary" onclick=getnext()>Back</button>`
+        console.log(result)
+    }
+
+
+    function without_customize() {
+        chapters = chapters_list
+        from_chapter_id = document.getElementById('id_from_chapter').value
+        to_chapter_id = document.getElementById('id_to_chapter').value
+
+        //    if(from_chapter_id)
+        all_chapter = document.getElementById('id_allChapter').checked;
+        if (!all_chapter && !from_chapter_id && !to_chapter_id) {
+            document.querySelector('.error-form-2').innerHTML = `<li style='color:white;'>fill any one of the above field</li>`;
+            return
+        }
+        document.querySelector('.error-form-2').innerHTML = ''
+        if (!all_chapter) {
+
+            console.log('hi')
+            for (i = 0; i < chapters.length; i++) {
+                if (!from_chapter_id && chapters[i]['chapter_no'] == 1) {
+                    from_chapter = chapters[i]
+                    from_chapter_id = parseInt(chapters[i]['id'])
+                }
+                else if (!to_chapter_id && chapters[i]['chapter_no'] == chapters.length) {
+                    to_chapter = chapters[i]
+                    to_chapter_id = parseInt(chapters[i]['id'])
+                }
+                if (from_chapter_id && chapters[i]['id'] == from_chapter_id) {
+                    from_chapter = chapters[i]
+                    from_chapter_id = parseInt(from_chapter_id)
+                }
+                else if (to_chapter_id && chapters[i]['id'] == to_chapter_id) {
+                    to_chapter = chapters[i]
+                    to_chapter_id = parseInt(to_chapter_id)
+                }
+            }
+            new_list = []
+            val = from_chapter['chapter_no'] - 1
+            for (i = val; i <= to_chapter['chapter_no'] - 1; i++) {
+                new_list.push(chapters[i])
+            }
+            chapters = new_list
+        }
+
+        console.log(chapters)
+        document.getElementById('grade_value').innerHTML = grade
+        document.getElementById('subject_value').innerHTML = subject_name
+        document.getElementById('No_of_questions').innerHTML = no_of_questions
+        content = ''
+        for (i = 0; i < chapters.length; i++) {
+            console.log(chapters[i]['name'])
+            content += `<li>${chapters[i]['name']}</li>`
+        }
+        document.getElementById('chapter_value').innerHTML = content
+        console.log(chapters)
+        document.querySelector('.back-btn-review').innerHTML = `<button class="btn btn-primary" onclick=getnext()>Back</button>`
+        review();
+    }
+
+    function review() {
+        document.getElementById('q-form-1').style.display = 'none';
+        document.getElementById('q-form-2').style.display = 'none';
+        document.getElementById('q-form-3').style.display = 'block';
+        document.getElementById('q-form-4').style.display = 'none';
+    }
+
+    function add() {
+        customize = true
+        chapters = chapters_list
+
+        let chapter_id = null
+        let knowledge = 0
+        let comprehension = 0
+        let application = 0
+        chapter_id = parseInt(document.getElementById('id_chapter_get').value)
+        knowledge = parseInt(document.getElementById('id_knowledge').value)
+        comprehension = parseInt(document.getElementById('id_comprehension').value)
+        application = parseInt(document.getElementById('id_application').value)
+        let current_index = null
+        questions_total = 0
+        let no_of_ques_chapter = 0
+        if (result.length) {
+            for (i = 0; i < chapters_list.length; i++) {
+                if (result[i]) {
+                    no_of_ques_chapter = result[i]['cognitive_level']['knowledge'] + result[i]['cognitive_level']['comprehension'] + result[i]['cognitive_level']['application']
+                    questions_total += no_of_ques_chapter
+                    if (result[i]['id'] == chapter_id) {
+                        current_index = i
+                    }
+                }
+            }
+        }
+        if (current_index != null) {
+            result[current_index]['cognitive_level']['knowledge'] = knowledge;
+            result[current_index]['cognitive_level']['application'] = application;
+            result[current_index]['cognitive_level']['comprehension'] = comprehension;
+        } else {
+            result.push({
+                'id': chapter_id, 'cognitive_level': {
+                    'knowledge': knowledge,
+                    'comprehension': comprehension,
+                    'application': application
+                }
+            })
+        }
+
+        document.querySelector('.next-btn').innerHTML = `<button id="next-btn" class="submit-btn btn btn-primary" onclick=with_customize()>Review</button>`
+
+        let content3 = ''
+
+        questions_total = 0;
+        if (result.length) {
+            for (i = 0; i < result.length; i++) {
+                let n = result[i]['cognitive_level']['knowledge'] + result[i]['cognitive_level']['comprehension'] + result[i]['cognitive_level']['application']
+                if (n) {
+                    questions_total += n
+
+                    for (j = 0; j < chapters.length; j++) {
+                        if (chapters[j]['id'] == result[i]['id']) {
+                            content3 += `<div> <p> CHAPTER ${i + 1} : ${(chapters_list[j]['name']).toUpperCase()} </p>
+                            <p> NO OF QUESTIONS : ${n} </p> </div>
+                            `
+                            break
+                        }
+
+                    }
+                }
+                content3 += `<p> Total No of questions : ${questions_total}`
+                customize_details.innerHTML = content3
+            }
+        }
+    }
+
+    function with_customize() {
+        content = ''
+        chapters = chapters_list
+        questions_total = 0
+        if (customize) {
+            for (i = 0; i < result.length; i++) {
+                questions_total += result[i]['cognitive_level']['knowledge'] + result[i]['cognitive_level']['comprehension'] + result[i]['cognitive_level']['application']
+            }
+            no_of_questions = questions_total
+            for (i = 0; i < result.length; i++) {
+                for (j = 0; j < chapters.length; j++) {
+                    if (chapters[j]['id'] == result[i]['id']) {
+                        content += `<li>${chapters[j]['name']}</li>`
+                        break
+                    }
+                }
+            }
+        }
+        document.getElementById('grade_value').innerHTML = grade
+        document.getElementById('subject_value').innerHTML = subject_name
+        document.getElementById('No_of_questions').innerHTML = questions_total
+        document.getElementById('chapter_value').innerHTML = content
+        document.querySelector('.back-btn-review').innerHTML = `<button class="btn btn-primary" onclick=get_customize()>Back</button>`
+        review();
+    }
+
+    function submit() {
+        console.log(questions_total)
+        console.log(customize)
+        if (!questions_total) {
+            result = 'null';
+        } else {
+            console.log(result)
+            result = JSON.stringify(result)
+            from_chapter_id = null
+            to_chapter_id = null
+            no_of_questions = questions_total
+            console.log(no_of_questions)
+            console.log(result)
+        }
+        let url1 = new URL('http://127.0.0.1:8000/api/question-paper/')
+        url1.searchParams.append('type', 'save');
+        fetch(url1,
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    'grade': grade, 'subject': subject_id, 'number_of_questions': no_of_questions, 'from_chapter': from_chapter_id,
+                    'to_chapter': to_chapter_id, 'all_chapters': all_chapter, 'timing': timing, 'overall_marks': overall_marks, 'customize': result
+                }
+                ),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'token' + ' ' + token,
+                    'X-CSRFToken': csrftoken
+                },
+            }).then(function (response) {
+                return response.json()
+            }).then(data => {
+                console.log(data)
+                console.log(data.status)
+                if (data.status != 'success') {
+                    document.getElementById('q-form-5').style.display = 'block'
+                    error_messages.innerHTML = `<li class='test-warning'>${(data.data)}</li>`;
+                }
+                else {
+                    question_paper_id = data.data.id
+                    timing = data.data.timing
+                    overall_marks = data.data.overall_marks
+                    userId = localStorage.getItem('id')
+                    let form_remarks = document.getElementById('id_remarks').value
+                    let form_description = document.getElementById('id_description').value
+                    let form_percentage = document.getElementById('id_pass_percentage').value
+                    fetch('http://127.0.0.1:8000/api/test/',
+                        {
+                            method: 'POST',
+                            body: JSON.stringify({ 'grade': grade, 'subject': subject_id, 'question_paper': question_paper_id, 'created_staff_id': userId, 'marks': overall_marks, 'duration': timing, 'remarks': form_remarks, 'pass_percentage': form_percentage, 'description': form_description }
+                            ),
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                                'Authorization': 'token' + ' ' + token,
+                                'X-CSRFToken': csrftoken
+                            },
+                        }).then(response => {
+                            if (response.status == 201) {
+                                console.log("Sucess response", response);
+                                // test_messages.innerHTML = `<p class="text-success"> ${form_remarks} test created successfully</p>`;
+                                // test_errors.innerHTML = ''
+
+                            }
+                            return response.json();
+                        }).then(function (data) {
+                            console.log(data)
+
+                            document.getElementById('q-form-5').style.display = 'block'
+                            document.getElementById('q-form-3').style.display = 'none'
+                            if (data.status != 'success') {
+                                error_messages.innerHTML = `<li class='test-warning'>${(data.data)}</li>`;
+                                messages.innerHTML = '';
+                            }
+                            else {
+                                messages.innerHTML = `<p class="success"> ${form_remarks} test created successfully</p>
+                <p class="success">Test ID :  ${data.data.test_id}</p>
+                `;
+                                error_messages.innerHTML = ''
+                                document.getElementById('q-form-4').style.display = 'none';
+                            }
+                        })
+                }
+
+            })
+    }
+
+</script>
+{% endblock %}

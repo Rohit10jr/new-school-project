@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+<div class="question-paper-form col-md-6 col-lg-4  col-sm-7 col-10" id="q-form">
+
+    <div class="q-form" id="q-form-1">
+        {% csrf_token %}
+        <p><label for="id_grade">Grade:</label><select class="form-control grade-in-form" name="grade"
+                class="grade-in-form" onchange=getgradename(this) required="" id="id_grade">
+                <option value="" selected="">---------</option>
+            </select> </p>
+        <p><label for="id_subject">Subject:</label> <select name="subject" onchange=getsubjectname(this) required=""
+                id="id_subject" class="form-control">
+                <option value="" selected="">---------</option>
+            </select></p>
+        <p><label for="id_no_of_questions">No of questions:</label> <input type="text" name="no_of_questions"
+                maxlength="20" required="" id="id_no_of_questions" class="form-control"></p>
+        <p class="text-center">
+            <button id="next-btn" class="btn btn-md btn-warning" onclick=getnext()>Next</button>
+
+        <div class="error-form-1"></div>
+    </div>
+    <!-- chapter form -->
+    <div class="q-form-2" id="q-form-2">
+        {{custom_form.as_p}}
+        <div class="error-form-2"></div>
+        <p class="chapter-btns">
+            <button id="back-btn" class="btn btn-warning" onclick=get()>Back</button>
+            <button id="customize-btn" class="submit-btn btn btn-warning" onclick=get_customize()>Customize</button>
+            <button id="next-btn" class="submit-btn btn btn-sm btn-warning" onclick=without_customize()>Next</button>
+        </p>
+    </div>
+    <!-- review form -->
+    <div class="q-form-3" id="q-form-3">
+        {% csrf_token %}
+        <p> <label for="grade">GRADE :</label> <span id="grade_value"></span> </p>
+        <p> <label for="subject">SUBJECT :</label> <span id="subject_value"></span> </p>
+        <p> <label for="chapter">CHAPTER :</label> <span id="chapter_value"></span> </p>
+        <p> <label for="no_of_questions">NO_OF_QUESTIONS :</label> <span id="No_of_questions"></span> </p>
+        <p> <label>Download pdf :</label> <button class="btn btn-warning" onclick=question_paper_pdf()> <i
+                    class="fa fa-download" aria-hidden="true"></i> </button> </p>
+        <p> <label for="question-paper-details-btn">Question Details :</label> <span id="question-paper-details-btn"
+                class="question-paper-details-btn"></span> </p>
+
+        <span id="create-quespaper-btn"><button class="btn btn-sm btn-warning" onclick=question_paper_create()>Create
+                Question
+                Paper</button></span>
+        <span class="create-test-modal-btn"></span>
+        <span class="back-btn-review"></span>
+        <!-- <i class="fa fa-sticky-note-o" aria-hidden="true"></i> -->
+        </p>
+    </div>
+    <!-- customize form -->
+
+    <div class="q-form-5" id="q-form-5">
+        <div class="messages"></div>
+        <div class="error-messages"></div>
+    </div>
+
+
+</div>
+<!-- question list form -->
+<div class="q-form-6" id="q-form-6">
+</div>
+<div class="q-form-4" id="q-form-4" style="display: block;">
+    <p id="q-form-4-head"> to drag </p>
+    <p><label for="id_chapter_get">Chapters :</label> <select name="chapters" onchange=getcustomize_details()
+            required="" id="id_chapter_get">
+            <option value="" selected="">---------</option>
+        </select>
+    </p>
+
+
+    <span class="back-btn btn-warning "><button id="next-btn" class="submit-btn btn-sm btn-warning"
+            onclick="getnext()">Back</button></span>
+    <span class="next-btn btn-warning"><button id="next-btn" class="submit-btn btn-sm btn-warning"
+            onclick=with_customize()>Next</button></span>
+
+    <div class="customize-details">
+
+    </div>
+    <div class="custom-error">
+
+    </div>
+</div>
+<div class="modal fade" id="question-paper-details" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" id="media-question" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" id="close-btn" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="question_paper_div">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <!-- <button id="delete-btn-yes" data-dismiss="modal" class="delete-btn-yes btn btn-danger">Yes</button> -->
+                <button id="delete-btn-no" data-dismiss="modal" aria-label="Close"
+                    class="delete-btn-no btn btn-warning">Back</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="test-create-details" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" id="media-question" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" id="close-btn" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="test-form" class="test-form">
+                    <p> <label for="remarks">REMARKS</label>{{test_form.remarks}}</p>
+                    <p> <label for="remarks">DESCRIPTION</label>{{test_form.description}}</p>
+                    <p> <label for="remarks">MARKS</label>{{test_form.overall_marks}}</p>
+                    <p> <label for="remarks">TIMING <small>in sections</small></label>{{test_form.timing}}</p>
+                    <p> <label for="remarks">PASS PERCENTAGE</label>{{test_form.pass_percentage}}</p>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span id="next-btn" class="next-btn-woc"></span>
+                <button id="delete-btn-no" data-dismiss="modal" aria-label="Close"
+                    class="delete-btn-no btn btn-warning">Back</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'script_files/question-paper.js' %}" type="text/javascript"></script>
+<script src="{% static 'script_files/question-paper-2.js' %}" type="text/javascript"></script>
+<script src="{% static 'script_files/question-paper-3.js' %}" type="text/javascript"></script>
+
+{% endblock %}
