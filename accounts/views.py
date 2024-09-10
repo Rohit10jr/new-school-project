@@ -6,8 +6,8 @@ from django.contrib.auth import login, logout, authenticate
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.status import (
     HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_401_UNAUTHORIZED, HTTP_204_NO_CONTENT,
-    HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_203_NON_AUTHORITATIVE_INFORMATION, HTTP_206_PARTIAL_CONTENT
-)
+    HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_203_NON_AUTHORITATIVE_INFORMATION, HTTP_206_PARTIAL_CONTENT, 
+    HTTP_500_INTERNAL_SERVER_ERROR)
 from django.contrib.auth import get_user_model
 User = get_user_model()
 from .serializers import SigninSerializer,SignupSerializer, ProfileSerializer, UserCheckSerializer, UserDetailsSerializer
@@ -36,7 +36,41 @@ class SignupView(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response({"status": ResponseChoices.SUCCESS, "message": f"User {serializer.validated_data.pop('first_name')} Registered Successfully"}, status=HTTP_201_CREATED)
-        return Response({"status": ResponseChoices.FAILURE, "data": serializer.errors, }, status=HTTP_206_PARTIAL_CONTENT)
+        return Response({"status": ResponseChoices.FAILURE, "data": serializer.errors, }, status=HTTP_400_BAD_REQUEST)
+
+
+# class SimpleLoginView(APIView):
+#     serializer_class = SigninSerializer
+#     permission_classes = [AllowAny]
+
+#     def post(self, request):
+#         email = request.data.get('email')
+#         phone = request.data.get('phone')
+#         if email and phone:
+#             try:
+#                 print(email, phone)
+#                 user = PasswordlessAuthBackend.authenticate(
+#                     request, email=email, phone=phone)
+#                 # user = authenticate(
+#                 #     request, email=email, phone=phone)
+#                 login(request, user)
+#                 print(user)
+#             except Exception as e:
+#                 return Response({"status": str(e)}, status=HTTP_204_NO_CONTENT)
+#             if user:
+#                 token, created = Token.objects.get_or_create(user=user)
+#                 print(token)
+#                 data = {
+#                     "id": user.id,
+#                     "token": token.key,
+#                     "email": user.email,
+#                     "phone": user.phone,
+#                     "user_type": user.user_type,
+#                     "data_entry": user.is_data_entry,
+#                     "register_number": user.register_number
+#                 }
+#                 return Response({"status": ResponseChoices.SUCCESS, "data": data, "token":token.key}, status=HTTP_200_OK)
+#         return Response({"status": "failed"}, status=HTTP_203_NON_AUTHORITATIVE_INFORMATION)
 
 
 class SimpleLoginView(APIView):
@@ -46,31 +80,34 @@ class SimpleLoginView(APIView):
     def post(self, request):
         email = request.data.get('email')
         phone = request.data.get('phone')
+        
         if email and phone:
             try:
+                print(email, phone)
                 user = PasswordlessAuthBackend.authenticate(
                     request, email=email, phone=phone)
-                # user = authenticate(
-                #     request, email=email, phone=phone)
-                login(request, user)
-                print(user)
+                
+                if user is not None:
+                    login(request, user)
+                    token, created = Token.objects.get_or_create(user=user)
+                    data = {
+                        "id": user.id,
+                        "token": token.key,
+                        "email": user.email,
+                        "phone": user.phone,
+                        "user_type": user.user_type,
+                        "data_entry": user.is_data_entry,
+                        "register_number": user.register_number
+                    }
+                    return Response({"status": "success", "data": data, "token": token.key}, status=HTTP_200_OK)
+                else:
+                    return Response({"status": "failed", "message": "Invalid credentials"}, status=HTTP_401_UNAUTHORIZED)
+
             except Exception as e:
-                return Response({"status": str(e)}, status=HTTP_204_NO_CONTENT)
-            if user:
-                token, created = Token.objects.get_or_create(user=user)
-                print(token)
-                data = {
-                    "id": user.id,
-                    "token": token.key,
-                    "email": user.email,
-                    "phone": user.phone,
-                    "user_type": user.user_type,
-                    "data_entry": user.is_data_entry,
-                    "register_number": user.register_number
-                }
-                return Response({"status": ResponseChoices.SUCCESS, "data": data, "token":token.key}, status=HTTP_200_OK)
-        return Response({"status": "failed"}, status=HTTP_203_NON_AUTHORITATIVE_INFORMATION)
-        
+                return Response({"status": "error", "message": str(e)}, status=HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return Response({"status": "failed", "message": "Email and phone are required"}, status=HTTP_400_BAD_REQUEST)
+
 
 class LogoutView(APIView):
     permission_classes = [AllowAny]

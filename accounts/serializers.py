@@ -27,7 +27,12 @@ class SignupSerializer(serializers.Serializer):
     last_name = serializers.CharField(max_length=15)
     full_name = serializers.CharField(max_length=30, required=False, allow_blank=True)
     address = serializers.CharField(max_length=45, required=False, allow_blank=True)
-    standard = serializers.ListField(child=serializers.CharField(default=None), default=None, required=False)
+    # standard = serializers.ListField(child=serializers.CharField(default=None), default=None, required=False)
+    standard = serializers.ListField(
+        child=serializers.CharField(allow_blank=True),
+        required=False,
+        default=list
+    )
     profile_picture = serializers.ImageField(
         required=False, max_length=None, allow_empty_file=True, use_url=True, default='user_profile/profile.png'
     )

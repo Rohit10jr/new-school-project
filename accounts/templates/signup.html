@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <script>
+        // async function register(event) {
+        //     event.preventDefault();
+
+        //     const formData = new FormData();
+        //     formData.append('email', document.getElementById('email').value);
+        //     formData.append('phone', document.getElementById('phone').value);
+        //     formData.append('register_number', document.getElementById('register_number').value);
+        //     formData.append('date_of_birth', document.getElementById('date_of_birth').value);
+        //     formData.append('user_type', document.getElementById('user_type').value);
+        //     formData.append('is_data_entry', document.getElementById('is_data_entry').checked);
+        //     formData.append('first_name', document.getElementById('first_name').value);
+        //     formData.append('last_name', document.getElementById('last_name').value);
+        //     formData.append('full_name', document.getElementById('full_name').value);
+        //     formData.append('address', document.getElementById('address').value);
+        //     formData.append('standard', document.getElementById('standard').value);
+        //     formData.append('profile_picture', document.getElementById('profile_picture').files[0]);
+
+        //     try {
+        //         const response = await fetch('http://127.0.0.1:8000/api/signup/', {
+        //             method: 'POST',
+        //             body: formData,
+        //         });
+
+        //         const data = await response.json();
+
+        //         if (response.ok) {
+        //             alert('User registered successfully!');
+        //             window.location.href = '/login/';
+        //         } else {
+        //             alert('Registration failed: ' + JSON.stringify(data));
+        //         }
+        //     } catch (error) {
+        //         console.error('Error:', error);
+        //         alert('An error occurred. Please try again.');
+        //     }
+        // }
+
+        function register(event) {
+            event.preventDefault();
+            
+            let form = document.getElementById('signupForm');
+            let formData = new FormData(form);
+
+            fetch('http://127.0.0.1:8000/api/signup/', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    alert("Registration successful!");
+                } else {
+                    console.log("Registration failed:", data);
+                    alert(`Registration failed: ${JSON.stringify(data)}`);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Register</h1>
+  
+    <form id="signupForm" onsubmit="register(event)" enctype="multipart/form-data">
+            <!-- Form fields here -->
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="phone">Phone:</label>
+        <input type="text" id="phone" name="phone" maxlength="10" required><br><br>
+
+        <label for="register_number">Register Number:</label>
+        <input type="text" id="register_number" name="register_number" maxlength="15" required><br><br>
+
+        <label for="date_of_birth">Date of Birth:</label>
+        <input type="date" id="date_of_birth" name="date_of_birth" required><br><br>
+
+        <label for="user_type">User Type:</label>
+        <select id="user_type" name="user_type">
+            <option value="">Select</option>
+            <option value="is_student">is_student</option>
+            <option value="is_staff">is_staff</option>
+            <option value="is_admin">is_admin</option>
+            <!-- Add more user types if needed -->
+        </select><br><br>
+
+        <label for="is_data_entry">Is Data Entry:</label>
+        <input type="checkbox" id="is_data_entry" name="is_data_entry"><br><br>
+
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name" maxlength="15" required><br><br>
+
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name" maxlength="15" required><br><br>
+
+        <label for="full_name">Full Name:</label>
+        <input type="text" id="full_name" name="full_name" maxlength="30"><br><br>
+
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address" maxlength="45"><br><br>
+
+        <label for="standard">Standard:</label>
+        <input type="text" id="standard" name="standard"><br><br>
+
+        <label for="profile_picture">Profile Picture:</label>
+        <input type="file" id="profile_picture" name="profile_picture"><br><br>
+
+        <button type="submit">Register</button>
+    </form>
+</body>
+</html>

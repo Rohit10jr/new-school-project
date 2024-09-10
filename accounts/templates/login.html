@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <script>
+      async function login(event) {
+        event.preventDefault();
+        const email = document.getElementById("email").value;
+        const phone = document.getElementById("phone").value;
+
+        try {
+          const response = await fetch(
+            "http://127.0.0.1:8000/api/simplelogin/",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                email: email, // Sending email and phone as required
+                phone: phone
+              }),
+            }
+          );
+
+          const data = await response.json();
+          if (response.ok) {
+            // Store the token in local storage
+            localStorage.setItem("token", data.token);
+            // Redirect to home page after successful login
+            window.location.href = "/home/";
+          } else {
+            alert("Login failed: " + data.status);
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          alert("An error occurred. Please try again.");
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Login</h1>
+    <form id="loginForm" onsubmit="login(event)">
+      <label for="email">Email:</label>
+      <input type="text" id="email" name="email" required /><br /><br />
+
+      <label for="phone">Phone:</label>
+      <input type="text" id="phone" name="phone" required /><br /><br />
+
+      <button type="submit">Login</button>
+    </form>
+  </body>
+</html>
