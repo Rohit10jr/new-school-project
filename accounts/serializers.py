@@ -140,7 +140,7 @@ class SigninSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ['first_name', 'last_name', 'full_name', "profile_picture", "standard", "address"]
+        fields = ['id', 'first_name', 'last_name', 'full_name', "profile_picture", "standard", "address"]
 
 
 class UserDetailsSerializer(serializers.ModelSerializer):

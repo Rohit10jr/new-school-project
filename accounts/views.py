@@ -137,13 +137,18 @@ class StudentProfileView(RetrieveUpdateAPIView):
 
     def update(self, request, pk):
         try:
-            profile = Profile.objects.get(user=pk)
+            profile = Profile.objects.get(id=pk)
+            print("before serializer")
             serializer = ProfileSerializer(profile, data=request.data)
+            print("after serializer")
             if serializer.is_valid():
+                print("valid serializer")
                 serializer.save()
-            return Response(serializer.data, status=HTTP_200_OK)
+            return Response({'status': 'success','data': serializer.data}, status=HTTP_200_OK)
+
         except Exception as e:
-            return Response({'status': 'failure', 'data': str(e)}, status=HTTP_204_NO_CONTENT)
+            print("inside except")
+            return Response({'status': 'failure', 'data': str(e)}, status=HTTP_400_BAD_REQUEST)
 
 
 class UserDetailsView(ListAPIView, Pagination):
@@ -227,6 +232,7 @@ class ProfileView(APIView):
 
     def get(self, request):
         user = self.request.user
+        print("user", user)
         serializer = UserDetailsSerializer(user)
         return Response({"status": ResponseChoices.SUCCESS, "data": serializer.data}, status=HTTP_200_OK)
 
@@ -383,6 +389,14 @@ class check_for_user(APIView):
         serializer.is_valid(raise_exception=True)
         email = serializer.validated_data.get('email')
         phone = serializer.validated_data.get('phone')
+
+        # If both phone and email are present, check for both
+        if phone and email:
+            user_exists = User.objects.filter(phone=phone, email=email.lower()).exists()
+            if user_exists:
+                return Response({"status": "User with this email and phone exists."}, status=HTTP_200_OK)
+            else:
+                return Response({"status": "No user found with the given email and phone."}, status=HTTP_404_NOT_FOUND)
 
         if phone and User.objects.filter(phone=phone).exists():
             return Response({"status": "User with this phone number exists."}, status=HTTP_200_OK)

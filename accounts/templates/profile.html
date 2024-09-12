@@ -1,0 +1,193 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+</head>
+
+<body>
+    <section>
+        <h1>User Profile</h1>
+        <div id="profile-error" style="color: red; display: none;"></div>
+        <form id="profile_form">
+            {% csrf_token %}
+            <label for="first_name"><strong>First Name:</strong></label>
+            <input type="text" id="first_name" name="first_name"><br>
+
+            <label for="last_name"><strong>Last Name:</strong></label>
+            <input type="text" id="last_name" name="last_name"><br>
+
+            <label for="full_name"><strong>Full Name:</strong></label>
+            <input type="text" id="full_name" name="full_name"><br>
+
+            <label for="address"><strong>Address:</strong></label>
+            <input type="text" id="address" name="address"><br>
+
+            <label for="standard"><strong>Standard:</strong></label>
+            <input type="text" id="standard" name="standard"><br>
+
+            <label for="profile_picture"><strong>Profile Picture:</strong></label>
+            <img id="profile_picture" src="" alt="Profile Picture" width="100"><br>
+
+            <button type="button" id="edit-btn" onclick="updateProfile()">Edit</button>
+        </form>
+    </section>
+
+    <script type="text/javascript">
+        // Fetch and populate profile data
+        function fetchProfile() {
+            const token = localStorage.getItem('token');  // Get token from localStorage
+            let user = localStorage.getItem('user_type');
+            let data_entry = localStorage.getItem('data_entry')
+            let grade_list = []
+            let content = ''
+
+            if (!token) {
+                document.getElementById('profile-error').innerText = 'No token found. Please log in first.';
+                document.getElementById('profile-error').style.display = 'block';
+                return;
+            }
+
+            console.log("Token accessed");
+
+            // Fetch profile data using the token
+            fetch('http://127.0.0.1:8000/api/profile/', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + token  // Send token in the Authorization header
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch profile information');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Profile Data: ", data);
+
+                localStorage.setItem('profile_id', data.data.profile.id);
+                console.log(data.data.profile.first_name)
+                console.log(data.data.profile.id)
+
+
+                // Populate the form with profile data
+                document.getElementById('first_name').value = data.data.profile.first_name || '';
+                document.getElementById('last_name').value = data.data.profile.last_name || '';
+                document.getElementById('full_name').value = data.data.profile.full_name || '';
+                document.getElementById('address').value = data.data.profile.address || '';
+
+                if (user !== 'is_student') {
+                    document.getElementById('standard').value = data.data.profile.standard.join(', ') || '';
+                }
+
+                // document.getElementById('profile_picture').src = data.data.profile.profile_picture || 'default-profile.png';
+            })
+            .catch(error => {
+                document.getElementById('profile-error').innerText = error.message;
+                document.getElementById('profile-error').style.display = 'block';
+            });
+        }
+
+
+        function updateProfile() {
+            const token = localStorage.getItem('token');
+            const userId = localStorage.getItem('profile_id');
+            const firstName = document.getElementById('first_name').value;
+            const lastName = document.getElementById('last_name').value;
+            const fullName = document.getElementById('full_name').value;
+            const address = document.getElementById('address').value;
+            // const standard = document.getElementById('standard').value.split(',').map(s => s.trim());  // Correcting standard formatting
+
+            fetch(`http://127.0.0.1:8000/api/student-profile/${userId}/`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + token
+                },
+                body: JSON.stringify({
+                    'first_name': firstName,
+                    'last_name': lastName,
+                    'full_name': fullName,
+                    'address': address
+                    // 'standard': standard
+                })
+            })
+            .then(response => {
+            if (!response.ok) {
+                // If the response is not OK (4xx, 5xx status), throw an error
+                throw new Error('Failed to update profile. Status: ' + response.status);
+            }
+            return response.json();  // This will parse the response if it's valid JSON
+        })
+        .then(data => {
+            console.log(data)
+            if (data.status === 'success') {
+                alert("update successful");
+                window.location.reload();  // Reload page on success
+            } else {
+                throw new Error('Update failed: ' + (data.message || 'Unknown error'));
+            }
+        })
+            .catch(error => {
+                document.getElementById('profile-error').innerText = error.message;
+                document.getElementById('profile-error').style.display = 'block';
+            });
+        }
+
+        // Edit profile and send a POST request to update data
+        // function editProfile() {
+        //     const token = localStorage.getItem('token');
+        //     let userId = localStorage.getItem('profile_id');  // Assume this stores the user id or profile pk
+        //     console.log("user_id",userId)
+        //     if (!token) {
+        //         alert('No token found. Please log in first.');
+        //         return;
+        //     }
+
+        //     // Get updated form data
+        //     const updatedProfile = {
+        //         first_name: document.getElementById('first_name').value,
+        //         last_name: document.getElementById('last_name').value,
+        //         full_name: document.getElementById('full_name').value,
+        //         address: document.getElementById('address').value,
+        //         standard: document.getElementById('standard').value.split(',').map(s => s.trim()),  // Convert standard to an array
+        //     };
+
+        //     // Send POST request to update profile
+        //     fetch(`http://127.0.0.1:8000/api/student-profile/${userId}/`, {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //             'Authorization': 'Token ' + token, 
+
+        //         },
+        //         body: JSON.stringify(updatedProfile)
+        //     })
+        //     .then(response => {
+        //         if (!response.ok) {
+        //             throw new Error('Failed to update profile', response.message);
+        //             console.log(response.message)
+        //         }
+        //         return response.json();
+        //     })
+        //     .then(data => {
+        //         console.log("Profile Updated: ", data);
+        //         alert('Profile updated successfully');
+        //         window.location.reload();  // Reload the page after successful update
+        //     })
+        //     .catch(error => {
+        //         alert('Error: ' + error.message);
+        //     });
+        // }
+
+        // Fetch profile when page loads
+        window.onload = fetchProfile;
+    </script>
+</body>
+
+</html>

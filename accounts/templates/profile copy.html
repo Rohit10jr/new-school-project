@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <!-- Add any CSS framework you prefer -->
+    <!-- <link rel="stylesheet" href="{% static 'css/style.css' %}"> -->
+</head>
+<body>
+        <section>
+            <h1>User Profile</h1>
+            <div id="profile_info">
+                <p><strong>First Name:</strong> <span id="first_name"></span></p>
+                <p><strong>Last Name:</strong> <span id="last_name"></span></p>
+                <p><strong>Full Name:</strong> <span id="full_name"></span></p>
+                <p><strong>Address:</strong> <span id="address"></span></p>
+                <p><strong>Standard:</strong> <span id="standard"></span></p>
+                <p><strong>Profile Picture:</strong> <img id="profile_picture" src="" alt="Profile Picture" /></p>
+            </div>
+        </section>
+
+    <script type="text/javascript">
+
+        // Function to fetch and display profile info
+        function fetchProfile() {
+            // Get the token and user details from localStorage
+            const token = localStorage.getItem('token');  // Get token from localStorage
+            var user = localStorage.getItem('user_type')
+            let grade_list = []
+            let content = ''
+            let data_entry = localStorage.getItem('data_entry')
+
+            // let container = document.querySelector('.container');
+            // let messages = document.querySelector('.messages')
+            // let error_messages = document.querySelector('.error-messages')
+            // let form = document.getElementById('profile-box')
+            // let csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+
+            if (!token) {
+                document.getElementById('profile-error').innerText = 'No token found. Please log in first.';
+                document.getElementById('profile-error').style.display = 'block';
+                return;
+            }
+
+            console.log("token accessed")
+
+            // Fetch profile data using the token
+            fetch('http://127.0.0.1:8000/api/profile/', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + token  // Send token in the Authorization header
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch profile information');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Profile Data: ", data);  // Log the data to see what is being returned
+    // Populate profile information in the HTML
+                console.log(data.email)
+
+                // Populate profile information in the HTML
+                document.getElementById('first_name').innerText = data.data.profile.first_name || 'N/A';
+                document.getElementById('last_name').innerText = data.data.profile.last_name || 'N/A';
+                document.getElementById('full_name').innerText = data.data.profile.full_name || 'N/A';
+                document.getElementById('address').innerText = data.data.profile.address || 'N/A';
+                // document.getElementById('standard').innerText = data.data.profile.standard.join(', ') || 'N/A';
+                // document.getElementById('profile_picture').src = data.profile_picture || '{% static "user_profile/profile.png" %}';
+
+                if (user != 'is_student') {
+                    document.getElementById('standard').innerText = data.data.profile.standard.join(', ') || 'N/A';
+        }
+
+            })
+            .catch(error => {
+                document.getElementById('profile-error').innerText = error.message;
+                document.getElementById('profile-error').style.display = 'block';
+            });
+        }
+
+        // Call fetchProfile function when the page loads
+        window.onload = fetchProfile;
+    </script>
+</body>
+</html>

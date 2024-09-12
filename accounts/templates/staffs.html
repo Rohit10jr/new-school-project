@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check User</title>
+</head>
+<body>
+    <div class="container">
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" placeholder="Email" class="form-control">
+      </div>
+    
+      <div class="container">
+        <label for="phone">Phone:</label><br>
+        <input type="phone" id="phone" placeholder="Phone" class="form-control">
+      </div>
+    
+      <div class="email-error"></div>
+      <div class="phone-error"></div>
+    
+      <!-- Button to trigger the check -->
+      <div class="container">
+        <button onclick="check_user()" class="btn btn-primary">Check User</button>
+      </div>
+    
+
+  <script>
+    function check_user() {
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        // Create the payload dynamically
+        let bodyData = {};
+        if (email.length>0) {bodyData.email = email;}
+        if (phone.length>0) {bodyData.phone = phone;}
+
+      fetch('http://127.0.0.1:8000/api/check-user/', {
+          method: 'POST',
+          headers: {
+                    'Content-Type': 'application/json',
+                },
+          body: JSON.stringify(bodyData)
+
+      }).then(res => res.json())
+      .then(data => {
+          if (data.status.includes("exists")) {
+              alert(data.status);
+          } else {
+              console.log('User not found');
+              document.querySelector('.email-error').innerText = '';
+              document.querySelector('.phone-error').innerText = '';
+          }
+      })
+      .catch(err => {
+          console.error('Error:', err);
+      });
+      
+    }
+  </script>
+</body>
+</html>

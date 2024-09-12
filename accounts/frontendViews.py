@@ -45,11 +45,16 @@ from django.utils.decorators import decorator_from_middleware
 #     return redirect ('/login/')
 
 
+def login_page(request):
+    return render(request, 'login.html')
+
 def signup_page(request):
     return render(request, 'signup.html')
 
-def login_page(request):
-    return render(request, 'login.html')
+def signup(request): 
+    form=signup_form(data=request.POST)    
+    return render(request,'register.html',{'form':form})  
+
 
 # @login_required
 def home_page(request):
@@ -70,3 +75,9 @@ def logout_view(request):
 def profile(request): 
     print(request.user,'hi')
     return render(request,'profile.html')
+
+def students(request):
+    return render(request,'students.html')
+
+def staff(request):
+    return render(request,'staffs.html')
